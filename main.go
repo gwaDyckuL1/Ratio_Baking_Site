@@ -14,6 +14,10 @@ func main() {
 	loadPages()
 
 	r := chi.NewRouter()
+
+	fs := http.FileServer(http.Dir("static"))
+	r.Handle("/static/*", http.StripPrefix("/static/", fs))
+
 	r.Get("/", indexHandler)
 	r.Get("/about", aboutHandler)
 	r.Get("/contact", contactHandler)
