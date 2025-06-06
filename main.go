@@ -8,7 +8,7 @@ import (
 )
 
 var templates = map[string]*template.Template{}
-var pages = []string{"index", "about", "contact"}
+var pages = []string{"index", "about", "contact", "register", "login"}
 
 func main() {
 	loadPages()
@@ -21,6 +21,8 @@ func main() {
 	r.Get("/", indexHandler)
 	r.Get("/about", aboutHandler)
 	r.Get("/contact", contactHandler)
+	r.Get("/register", registerHandler)
+	r.Get("/login", loginHandler)
 
 	http.ListenAndServe(":80", r)
 }
@@ -50,6 +52,20 @@ func aboutHandler(w http.ResponseWriter, r *http.Request) {
 }
 func contactHandler(w http.ResponseWriter, r *http.Request) {
 	err := templates["contact"].Execute(w, nil)
+	if err != nil {
+		http.Error(w, "Template error", http.StatusInternalServerError)
+	}
+}
+
+func loginHandler(w http.ResponseWriter, w *http.Request) {
+	err := templates["login"].Execute(w, nil)
+	if err != nil {
+		http.Error(w, "Template error", http.StatusInternalServerError)
+	}
+}
+
+func registerHandler(w http.ResponseWriter, r *http.Request) {
+	err := templates["register"].Execute(w, nil)
 	if err != nil {
 		http.Error(w, "Template error", http.StatusInternalServerError)
 	}

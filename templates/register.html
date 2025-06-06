@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{define "title"}}Sign Up{{end}}</title>
+</head>
+<body>
+    {{define "content"}}
+
+        <main>
+            <form action="/register" method="post">
+                <h1>Register</h1>
+                <h2>Why Create An Account?</h2>
+                <p>You can save recipies to your account....maybe more reasons some other day.</p>
+                <p>
+                    <label for="name">Name</label>
+                    <input type="text" name="name" id="name">
+                </p>
+                <p>
+                    <label for="username">Username:</label>
+                    <input type="text" name="username" id="username" required>
+                </p>
+                <p>
+                    <label for="email">Email:</label>
+                    <input type="email" name="email" id="email" required>
+                </p>
+                <p>
+                    <label for="password">Password:</label>
+                    <input type="password" name="password" id="password" required>
+                </p>
+                <p>
+                    <label for="check_password">Enter password again:</label>
+                    <input type="password" name="check_password" id="check_password" required>
+                </p>
+                <p>
+                    <button type="submit">Submit</button>
+                </p>
+            </form>    
+        </main>
+
+    {{end}}
+</body>
+</html>
