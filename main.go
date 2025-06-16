@@ -1,20 +1,75 @@
 package main
 
 import (
+	"html/template"
 	"net/http"
-	"text/template"
 )
 
+var templates = map[string]*template.Template{}
+var pages = []string{"index", "about", "contact", "register", "login"}
+
 func main() {
+	loadPages()
 
-	http.HandleFunc("/", indexHandle)
+	router := http.NewServeMux()
 
-	http.ListenAndServe(":80", nil)
+	fs := http.FileServer(http.Dir("static"))
+	router.Handle("/static/", http.StripPrefix("/static/", fs))
+
+	router.HandleFunc("/", indexHandler)
+	router.HandleFunc("/about", aboutHandler)
+	router.HandleFunc("/contact", contactHandler)
+	router.HandleFunc("/login", loginHandler)
+	router.HandleFunc("/register", registerHandler)
+
+	server := http.Server{
+		Addr:    ":80",
+		Handler: router,
+	}
+
+	server.ListenAndServe()
 }
 
-func indexHandle(w http.ResponseWriter, r *http.Request) {
+func loadPages() {
+	for _, page := range pages {
+		tmpl := template.Must(template.ParseFiles(
+			"templates/layout.html",
+			"templates/"+page+".html",
+		))
+		templates[page] = tmpl
+	}
+}
 
-	tmpl := template.Must(template.ParseFiles("templates/index.html"))
+func indexHandler(w http.ResponseWriter, r *http.Request) {
+	err := templates["index"].Execute(w, nil)
+	if err != nil {
+		http.Error(w, "Template error", http.StatusInternalServerError)
+	}
+}
 
-	tmpl.Execute(w, nil)
+func aboutHandler(w http.ResponseWriter, r *http.Request) {
+	err := templates["about"].Execute(w, nil)
+	if err != nil {
+		http.Error(w, "Template error", http.StatusInternalServerError)
+	}
+}
+func contactHandler(w http.ResponseWriter, r *http.Request) {
+	err := templates["contact"].Execute(w, nil)
+	if err != nil {
+		http.Error(w, "Template error", http.StatusInternalServerError)
+	}
+}
+
+func loginHandler(w http.ResponseWriter, r *http.Request) {
+	err := templates["login"].Execute(w, nil)
+	if err != nil {
+		http.Error(w, "Template error", http.StatusInternalServerError)
+	}
+}
+
+func registerHandler(w http.ResponseWriter, r *http.Request) {
+	err := templates["register"].Execute(w, nil)
+	if err != nil {
+		http.Error(w, "Template error", http.StatusInternalServerError)
+	}
 }

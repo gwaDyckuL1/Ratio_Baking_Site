@@ -1,0 +1,19 @@
+body {
+    width: 600px;
+    background-color: burlywood;
+    margin: 0 auto;
+}
+
+/*Tablets*/
+@media (min-width: 600px) {
+    body {
+        width: 900px;
+    }
+}
+
+/* Desktop */
+@media (min-width: 900px) {
+    body {
+        width: 1200px;
+    }
+}
