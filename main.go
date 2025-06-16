@@ -3,8 +3,6 @@ package main
 import (
 	"net/http"
 	"text/template"
-
-	"github.com/go-chi/chi/v5"
 )
 
 var templates = map[string]*template.Template{}
@@ -13,18 +11,23 @@ var pages = []string{"index", "about", "contact", "register", "login"}
 func main() {
 	loadPages()
 
-	r := chi.NewRouter()
+	router := http.NewServeMux()
 
 	fs := http.FileServer(http.Dir("static"))
-	r.Handle("/static/*", http.StripPrefix("/static/", fs))
+	router.Handle("/static/", http.StripPrefix("/static/", fs))
 
-	r.Get("/", indexHandler)
-	r.Get("/about", aboutHandler)
-	r.Get("/contact", contactHandler)
-	r.Get("/register", registerHandler)
-	r.Get("/login", loginHandler)
+	router.HandleFunc("/", indexHandler)
+	router.HandleFunc("/about", aboutHandler)
+	router.HandleFunc("/contact", contactHandler)
+	router.HandleFunc("/login", loginHandler)
+	router.HandleFunc("/register", registerHandler)
 
-	http.ListenAndServe(":80", r)
+	server := http.Server{
+		Addr:    ":80",
+		Handler: router,
+	}
+
+	server.ListenAndServe()
 }
 
 func loadPages() {
@@ -57,7 +60,7 @@ func contactHandler(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func loginHandler(w http.ResponseWriter, w *http.Request) {
+func loginHandler(w http.ResponseWriter, r *http.Request) {
 	err := templates["login"].Execute(w, nil)
 	if err != nil {
 		http.Error(w, "Template error", http.StatusInternalServerError)
