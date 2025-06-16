@@ -1,15 +1,22 @@
 package main
 
 import (
+	"database/sql"
 	"html/template"
+	"log"
 	"net/http"
+
+	_ "github.com/mattn/go-sqlite3"
 )
 
-var templates = map[string]*template.Template{}
+var database *sql.DB
 var pages = []string{"index", "about", "contact", "register", "login"}
+var templates = map[string]*template.Template{}
 
 func main() {
 	loadPages()
+	database = openDatabase()
+	defer database.Close()
 
 	router := http.NewServeMux()
 
@@ -38,6 +45,27 @@ func loadPages() {
 		))
 		templates[page] = tmpl
 	}
+}
+
+func openDatabase() *sql.DB {
+	db, err := sql.Open("sqlite3", "database/ratio.db")
+	if err != nil {
+		log.Fatal("Failed to open database. Error:", err)
+	}
+
+	createTableSQL := `
+	CREATE TABLE IF NOT EXISTS users (
+		username TEXT NOT NULL UNIQUE,
+		name TEXT,
+		email TEXT NOT NULL,
+		password TEXT NOT NULL
+	);
+	`
+	_, err = db.Exec(createTableSQL)
+	if err != nil {
+		log.Fatal("Error creating user table:", err)
+	}
+	return db
 }
 
 func indexHandler(w http.ResponseWriter, r *http.Request) {
