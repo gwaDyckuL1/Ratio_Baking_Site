@@ -1,17 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ block "title" .}} {{end}}</title>
-    <link rel="stylesheet" href="/static/style.css">
-</head>
-<body>
+{{ define "content" }}
     <nav>
-        <a href="/">Calculator</a>
+        <a href="calculator/">Calculator</a>
     </nav>
 
-    {{ block "content" .}} {{ end }}
-    
-</body>
-</html>
+    {{ block "calcContent" .}} {{ end }}
+
+ {{ end }}

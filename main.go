@@ -9,10 +9,12 @@ import (
 )
 
 var pages = []string{"index", "about", "contact", "register", "login"}
+var calcPages = []string{"calcIndex"}
 var templates = map[string]*template.Template{}
 
 func main() {
 	loadPages()
+	loadCalcPages()
 	database := database.OpenDatabase()
 	defer database.Close()
 
@@ -26,6 +28,8 @@ func main() {
 	router.HandleFunc("/contact", contactHandler)
 	router.HandleFunc("/login", loginHandler)
 	router.HandleFunc("/register", registerHandler)
+
+	router.HandleFunc("/calculator/", calculatorIndexHandler)
 
 	server := http.Server{
 		Addr:    ":80",
@@ -45,6 +49,17 @@ func loadPages() {
 	}
 }
 
+func loadCalcPages() {
+	for _, page := range calcPages {
+		tmpl := template.Must(template.ParseFiles(
+			"templates/layout.html",
+			"templates/calculator/layout.html",
+			"templates/calculator/"+page+".html",
+		))
+		templates[page] = tmpl
+	}
+}
+
 func indexHandler(w http.ResponseWriter, r *http.Request) {
 	err := templates["index"].Execute(w, nil)
 	if err != nil {
@@ -58,6 +73,14 @@ func aboutHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Template error", http.StatusInternalServerError)
 	}
 }
+
+func calculatorIndexHandler(w http.ResponseWriter, r *http.Request) {
+	err := templates["calcIndex"].Execute(w, nil)
+	if err != nil {
+		http.Error(w, "Template error with Calculator", http.StatusInternalServerError)
+	}
+}
+
 func contactHandler(w http.ResponseWriter, r *http.Request) {
 	err := templates["contact"].Execute(w, nil)
 	if err != nil {
