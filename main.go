@@ -9,7 +9,7 @@ import (
 )
 
 var pages = []string{"index", "about", "contact", "register", "login"}
-var calcPages = []string{"calcIndex"}
+var calcPages = []string{"calcIndex", "bread"}
 var templates = map[string]*template.Template{}
 
 func main() {
@@ -30,6 +30,7 @@ func main() {
 	router.HandleFunc("/register", registerHandler)
 
 	router.HandleFunc("/calculator/", calculatorIndexHandler)
+	router.HandleFunc("/calculator/bread", breadCalcHandler)
 
 	server := http.Server{
 		Addr:    ":80",
@@ -71,6 +72,13 @@ func aboutHandler(w http.ResponseWriter, r *http.Request) {
 	err := templates["about"].Execute(w, nil)
 	if err != nil {
 		http.Error(w, "Template error", http.StatusInternalServerError)
+	}
+}
+
+func breadCalcHandler(w http.ResponseWriter, r *http.Request) {
+	err := templates["bread"].Execute(w, nil)
+	if err != nil {
+		http.Error(w, "Template error with bread", http.StatusInternalServerError)
 	}
 }
 
