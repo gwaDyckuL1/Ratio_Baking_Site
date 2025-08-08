@@ -25,105 +25,93 @@
         <form action="" method="post">
 
             <div id="flour-weight" class="bread-options" style="display: none;">
-                <fieldset>
-                    <legend>Calculating Based On Flour Weight</legend>
-                    <div class="bread-form">
-                        <label for="flour-weight">Flour Weight</label>
-                        <input type="number" id="flour-weight" name="flour-weight" required>
-                    </div>
-                    <div class="bread-form">
-                        <label for="hydration-fw">Hydration Percentage</label>
-                        <input type="number" id="hydration-fw" name="hydration" required>
-                    </div>
-                    <div class="bread-form">
-                        <label for="fat-fw">Fat Percentage</label>
-                        <input type="number" id="fat-fw" name="fat">
-                    </div>
-                    <div class="bread-form">
-                        <label for="sugar-fw">Sugar Percentage</label>
-                        <input type="number" id="sugar-fw" name="sugar">
-                    </div>
-
-                </fieldset>
+                <h3>Calculating Based On Flour Weight</h3>
             </div>
 
             <div id="total-weight" class="bread-options" style="display: none;">
-                <fieldset>
-                    <legend>Calculating Based on Total Weight</legend>
-                    <div class="bread-form">
-                        <label for="dough-weight">Final Dough Weight</label>
-                        <input type="number" id="dough-weight" name="dough-weight" required>
-                    </div>
-                    <div class="bread-form">
-                        <label for="hydration-tw">Hydration Percentage</label>
-                        <input type="number" id="hydration-tw" name="hydration">
-                    </div>
-                </fieldset>
+                <h3>Calculating Based on Final Dough Weight</h3>
             </div>
 
             <div id="pan-dimension" class="bread-options" style="display: none;">
-                <fieldset>
-                    <legend>Calculating Based on Pan Diminsions</legend>
+                <h3>Calculating Based on Pan Diminsions</h3>
+                <div class="bread-form">
+                    <label for="measurement">Measurement</label>
+                    <select name="measurement" id="measurement">
+                        <option value="inches">Inches</option>
+                        <option value="centimeters">Centimeters</option>
+                    </select>
+                </div>
+                <div class="bread-form">
+                    <label for="shape">Pan Shape</label>
+                    <select name="shape" id="shape">
+                        <option value="">Select a Shape</option>
+                        <option value="square">Square..ish</option>
+                        <option value="round">Round</option>
+                    </select>
+                </div>
+                <div class="bread-form" id="square" style="display: none;">
                     <div class="bread-form">
-                        <label for="measurement">Measurement</label>
-                        <select name="measurement" id="measurement">
-                            <option value="inches">Inches</option>
-                            <option value="centimeters">Centimeters</option>
-                        </select>
+                        <label for="height">Height</label>
+                        <input type="number" id="height" name="height">
                     </div>
                     <div class="bread-form">
-                        <label for="shape">Pan Shape</label>
-                        <select name="shape" id="shape">
-                            <option value="">Select a Shape</option>
-                            <option value="square">Square..ish</option>
-                            <option value="round">Round</option>
-                        </select>
+                        <label for="width">Width</label>
+                        <input type="number" id="width" name="width">
                     </div>
-                    <div class="bread-form" id="square" style="display: none;">
-                        <div class="bread-form">
-                            <label for="height">Height</label>
-                            <input type="number" id="height" name="height">
-                        </div>
-                        <div class="bread-form">
-                            <label for="width">Width</label>
-                            <input type="number" id="width" name="width">
-                        </div>
-                        <div class="bread-form">
-                            <label for="depth">Depth</label>
-                            <input type="number" id="depth-square" name="depth">
-                        </div>
+                    <div class="bread-form">
+                        <label for="depth">Depth</label>
+                        <input type="number" id="depth-square" name="depth">
                     </div>
-                    <div class="bread-form" id="round" style="display: none;">
-                        <div class="bread-form">
-                            <label for="radius">Radius</label>
-                            <input type="number" id="radius" name="radius">
-                        </div>
-                        <div class="bread-form">
-                            <label for="depth-circle">Depth</label>
-                            <input type="number" id="depth-round" name="depth">
-                        </div>
+                </div>
+                <div class="bread-form" id="round" style="display: none;">
+                    <div class="bread-form">
+                        <label for="radius">Radius</label>
+                        <input type="number" id="radius" name="radius">
                     </div>
-                </fieldset>
+                    <div class="bread-form">
+                        <label for="depth-circle">Depth</label>
+                        <input type="number" id="depth-round" name="depth">
+                    </div>
+                </div>
+            </div>
+
+            <div class="ingredient bread-form" id="flour-view" style="display: none;">
+                <label for="flour">Flour Weight</label>
+                <input type="number" id="flour" name="flour" required>
+            </div>
+            <div class="ingredient bread-form" id="dough-weight-view" style="display: none;">
+                <label for="dough-weight">Final Dough Weight</label>
+                <input type="number" id="dough-weight" name="dough-weight" required>
+            </div>
+            <div class="ingredient bread-form" id="hydration-view" style="display: none;">
+                <label for="hydration">Hydration Percentage</label>
+                <input type="number" id="hydration" name="hydration" required>
+            </div>
+            <div class="ingredient bread-form" id="fat-view" style="display: none;">
+                <label for="fat">Fat Percentage</label>
+                <input type="number" id="fat" name="fat">
+            </div>
+            <div class="ingredient bread-form" id="sugar-view" style="display: none;">
+                <label for="sugar">Sugar Percentage</label>
+                <input type="number" id="sugar" name="sugar">
             </div>
 
             <div id="tangzhong-view" class="bread-options" style="display: none;">
-                <fieldset>
-                    <legend>Tangzhong</legend>
+                <div class="bread-form">
+                    <label for="tangzhong-choice">Tangzhong?</label>
+                    <select name="tangzhong-choice" id="tangzhong-choice">
+                        <option value="No">No</option> 
+                        <option value="Yes">Yes</option>
+                    </select>
+                </div>
+                <div id="tangzhong-select" class="bread-options" style="display: none;">
                     <div class="bread-form">
-                        <label for="tangzhong-choice">Tangzhong?</label>
-                        <select name="tangzhong-choice" id="tangzhong-choice">
-                            <option value="No">No</option> 
-                            <option value="Yes">Yes</option>
-                        </select>
+                        <label for="tangzhong-percentage">Tangzhong Percentage</label>
+                        <input type="number" id="tangzhong-percentage" name="tangzhong-percentage">
                     </div>
-                    <div id="tangzhong-select" class="bread-options" style="display: none;">
-                        <div class="bread-form">
-                            <label for="tangzhong-percentage">Tangzhong Percentage</label>
-                            <input type="number" id="tangzhong-percentage" name="tangzhong-percentage">
-                        </div>
-                    </div>
-                </fieldset>
+                </div>
             </div>
+            <input id="bread-submission" type="button" value="Submit" style="display: none;">
         </form>
 
         <script src="/static/js/bread.js"></script>   
