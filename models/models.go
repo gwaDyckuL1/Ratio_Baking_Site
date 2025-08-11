@@ -1,5 +1,7 @@
 package models
 
+type FormErrors map[string]string
+
 type RecipeData struct {
 	Calculator          string
 	SubCalculator       string
