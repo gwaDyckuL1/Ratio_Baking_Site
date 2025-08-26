@@ -121,25 +121,28 @@ func calcResultsHandler(w http.ResponseWriter, r *http.Request) {
 		Width:               r.FormValue("width"),
 		Depth:               r.FormValue("depth"),
 		Radius:              r.FormValue("radius"),
-		Flour:               r.FormValue("flour"),
+		FlourIn:             r.FormValue("flour"),
 		DoughWeight:         r.FormValue("dough-weight"),
-		Hydration:           r.FormValue("hydration"),
-		Fat:                 r.FormValue("fat"),
-		Sugar:               r.FormValue("sugar"),
+		HydrationIn:         r.FormValue("hydration"),
+		FatIn:               r.FormValue("fat"),
+		SugarIn:             r.FormValue("sugar"),
 		TangzhongPercentage: r.FormValue("tangzhong-percentage"),
-		Salt:                r.FormValue("salt"),
-		Sourdough:           r.FormValue("sourdough"),
-		Yeast:               r.FormValue("yeast"),
+		SaltIn:              r.FormValue("salt"),
+		Leavener:            r.FormValue("leavener-choice"),
+		SourdoughIn:         r.FormValue("sourdough"),
+		YeastIn:             r.FormValue("yeast"),
 	}
 
-	calculator.Calculator(&data)
+	problems := models.FormErrors{}
+
+	calculator.Calculator(&data, problems)
 
 	tmpl := template.Must(template.ParseFiles(
 		"templates/layout.html",
 		"templates/calculator/layout.html",
 		"templates/calculator/results.html",
 	))
-	tmpl.Execute(w, data)
+	tmpl.Execute(w, &data)
 }
 
 func registerHandler(w http.ResponseWriter, r *http.Request) {

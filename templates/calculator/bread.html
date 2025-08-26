@@ -15,14 +15,14 @@
             <h2>Instructions</h2>
         </div>
 
-        <select name="calculator-bread" id="calculator-bread">
-            <option value="">Choose an option</option>
-            <option value="flour-weight">Flour Weight</option>
-            <option value="total-weight">Total Weight</option>
-            <option value="pan-dimension">Pan Diminsions</option>
-        </select>
-
         <form action="/calculator/results" method="post">
+            <select name="calculator-bread" id="calculator-bread">
+                <option value="">Choose an option</option>
+                <option value="flour-weight">Flour Weight</option>
+                <option value="total-weight">Total Weight</option>
+                <option value="pan-dimension">Pan Diminsions</option>
+            </select>
+
             <input type="hidden" name="calculatorFor" value="bread">
             <div id="flour-weight" class="bread-options" style="display: none;">
                 <h3>Calculating Based On Flour Weight</h3>
@@ -103,8 +103,8 @@
             <div id="leavener-view" class="bread-options" style="display: none">
                 <div class="bread-form">
                     <label for="leavener-choice">Leavener</label>
-                    <select name="leavener-choice" id="leavener-choice">
-                        <option value="Choose Leavener">Choose Leavener</option>
+                    <select name="leavener-choice" id="leavener-choice" required>
+                        <option value="">Choose Leavener</option>
                         <option value="Sourdough">Sourdough</option> 
                         <option value="Yeast">Yeast</option>
                     </select>
@@ -115,7 +115,7 @@
                 </div>
                 <div class="ingredient bread-form" id="yeast-view" style="display: none;">
                     <label for="yeast">Yeast %</label>
-                    <input type="number" id="yeast" name="sourdough">
+                    <input type="number" id="yeast" name="yeast">
                 </div>
             </div>
 

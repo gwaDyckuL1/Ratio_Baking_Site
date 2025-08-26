@@ -3,7 +3,38 @@
 {{define "calcContent" }}
 
 <h1>Results</h1>
-
-
+<div>
+    <p>Here are your results for the {{ .Calculator }} by {{ .SubCalculator }}</p>
+    <ul>
+        <li>Flour: {{ .FlourOut }} grams</li>
+        <li>Hydration {{ .HydrationOut }} grams</li>
+        <li>Salt: {{ .SaltOut }}</li>
+        <li>
+            {{ if eq .Leavener "Sourdough" }}
+                Sourdough: {{.LeavenerOut}} grams
+            {{ end }}
+            {{ if eq .Leavener "Yeast" }}
+                Yeast: {{ .LeavenerOut }} grams
+            {{ end }}
+        </li>
+        {{ if .FatIn }}
+            <li>
+                Fat: {{ .FatOut }} grams
+            </li>
+        {{ end }}
+        {{ if .SugarIn }}
+            <li>
+                Sugar: {{ .SugarOut }} grams
+            </li>
+        {{ end }}
+    </ul>
+    {{ if .TangzhongPercentage }}
+    <h3>Tangzhong Amounts</h3>
+    <ul>
+        <li>Flour: {{ .TangzhongFlour }}</li>
+        <li>Hydration: {{ .TangzhongHydration }}</li>
+    </ul>
+    {{ end }}
+</div>
 
 {{ end }}

@@ -11,15 +11,22 @@ type RecipeData struct {
 	Width               string
 	Depth               string
 	Radius              string
-	Flour               string
+	FlourIn             string
+	FlourOut            string
 	DoughWeight         string
-	Hydration           string
-	Fat                 string
-	Sugar               string
+	HydrationIn         string
+	HydrationOut        string
+	FatIn               string
+	FatOut              string
+	SugarIn             string
+	SugarOut            string
 	TangzhongPercentage string
 	TangzhongFlour      string
 	TangzhongHydration  string
-	Salt                string
-	Sourdough           string
-	Yeast               string
+	SaltIn              string
+	SaltOut             string
+	Leavener            string
+	LeavenerOut         string
+	SourdoughIn         string
+	YeastIn             string
 }

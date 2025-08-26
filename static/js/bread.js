@@ -67,7 +67,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
         leavenerChoice.addEventListener('change', function() {
             const leavenerSelected = this.value;
-            if (leavenerSelected === 'Choose Leavener') {
+            if (leavenerSelected === '') {
                 document.getElementById('sourdough-view').style.display='none';
                 document.getElementById('yeast-view').style.display='none';
                 
