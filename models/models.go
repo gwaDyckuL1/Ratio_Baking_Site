@@ -10,7 +10,7 @@ type RecipeData struct {
 	Height              string
 	Width               string
 	Depth               string
-	Radius              string
+	Diameter            string
 	FlourIn             string
 	FlourOut            string
 	DoughWeight         string
@@ -21,6 +21,7 @@ type RecipeData struct {
 	SugarIn             string
 	SugarOut            string
 	TangzhongPercentage string
+	TanghzhongRatio     string
 	TangzhongFlour      string
 	TangzhongHydration  string
 	SaltIn              string

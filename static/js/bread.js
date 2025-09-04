@@ -86,6 +86,24 @@ document.addEventListener("DOMContentLoaded", function() {
             const tangzhonSelect = this.value;
             if (tangzhonSelect === 'Yes') {
                 document.getElementById('tangzhong-select').style.display = 'block';
+                const tangzhongPercentageInput = document.getElementById("tangzhong-percentage");
+                const tangzhongRatioInput = document.getElementById("tangzhong-ratio")
+                const hydrationInput = document.getElementById("hydration")
+                tangzhongPercentageInput.addEventListener('input', function() {
+                    if (tangzhongRatioInput.value != "") {
+                        checkHydrationLevels(parseFloat(hydrationInput.value), parseFloat(tangzhongPercentageInput.value), parseFloat(tangzhongRatioInput.value));
+                    }
+                })
+                tangzhongRatioInput.addEventListener('input', function () {
+                    if (tangzhongPercentageInput.value != "") {
+                        checkHydrationLevels(parseFloat(hydrationInput.value), parseFloat(tangzhongPercentageInput.value), parseFloat(tangzhongRatioInput.value));
+                    }
+                })
+                hydrationInput.addEventListener("input", function() {
+                    if (tangzhongRatioInput.value != "" && tangzhongPercentageInput.value != "") {
+                        checkHydrationLevels(parseFloat(hydrationInput.value), parseFloat(tangzhongPercentageInput.value), parseFloat(tangzhongRatioInput.value));
+                    }
+                })
             }
             if (tangzhonSelect === 'No') {
                 document.getElementById('tangzhong-select').style.display = 'none';
@@ -93,3 +111,15 @@ document.addEventListener("DOMContentLoaded", function() {
         })
     })
 })
+
+function checkHydrationLevels(hydration, tangzhongPercentage, tangzhongRatio) {
+    document.getElementById("all-tangzhong").style.display='none';
+    document.getElementById("hydration-needed").style.display='none';
+    const tangzhongHydration = (tangzhongPercentage / (tangzhongRatio + 1)) * tangzhongRatio;
+    if (hydration === tangzhongHydration)  {
+        document.getElementById("all-tangzhong").style.display='flex';
+    }
+    if (hydration < tangzhongHydration) {
+        document.getElementById("hydration-needed").style.display='flex';
+    }
+}

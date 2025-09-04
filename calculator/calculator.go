@@ -2,6 +2,7 @@ package calculator
 
 import (
 	"fmt"
+	"math"
 	"strconv"
 
 	"github.com/gwaDyckuL1/Ratio_Baking_Site/models"
@@ -57,26 +58,77 @@ func breadCalculator(data *models.RecipeData, problems models.FormErrors) {
 		tangzhongCheck(data, tangzhongPercentage, problems)
 	}
 	if data.SubCalculator == "total-weight" {
-		//doughWeight := stringToFloat("Total Dough Weight", data.DoughWeight, problems)
+		doughWeight := stringToFloat("Total Dough Weight", data.DoughWeight, problems)
+		totalPercent := 100 + hydration + fat + sugar + salt + leaveningAmount
+		flour := (100 / totalPercent) * doughWeight
+		data.FatOut = fmt.Sprintf("%.0f", flour*fat/100)
+		data.FlourIn = fmt.Sprintf("%.0f", flour)
+		data.FlourOut = fmt.Sprintf("%.0f", flour)
+		data.HydrationOut = fmt.Sprintf("%.0f", flour*hydration/100)
+		data.LeavenerOut = fmt.Sprintf("%.0f", flour*(leaveningAmount/100))
+		data.SaltOut = fmt.Sprintf("%.0f", flour*(salt/100))
+		data.SugarOut = fmt.Sprintf("%.0f", flour*(sugar/100))
 
+		tangzhongCheck(data, tangzhongPercentage, problems)
 	}
 	if data.SubCalculator == "pan-dimension" {
+		height := stringToFloat("Pan Height", data.Height, problems)
+		width := stringToFloat("Pan Width", data.Width, problems)
+		depth := stringToFloat("Pan Depth", data.Depth, problems)
+		diameter := stringToFloat("Pan Radius", data.Diameter, problems)
+		if data.Measurement == "inches" {
+			//inch to centimeter conversion is 1 : 2.54
+			height = height * 2.54
+			width = width * 2.54
+			depth = depth * 2.54
+			diameter = diameter * 2.54
+		}
+		volumn := 0.00
+		if data.Shape == "square" {
+			volumn = height * width * depth
+		} else {
+			radius := diameter / 2
+			volumn = math.Pi * math.Pow(radius, 2) * height
+		}
+		fmt.Println("Volumn is: ", volumn)
+		//total dough weight = volumn * density * fill
+		//starting with density of 1, like water
+		// fill is how full the pan should be before proofing and baking
+		doughWeight := 0.00
+		if fat > 0 {
+			doughWeight = volumn * 1.00 * 0.6
+		} else {
+			doughWeight = volumn * 1.00 * 0.5
+		}
+		fmt.Println("Total dough weight: ", doughWeight)
+		totalPercent := 100 + hydration + fat + sugar + salt + leaveningAmount
+		flour := (100 / totalPercent) * doughWeight
+		data.FatOut = fmt.Sprintf("%.0f", flour*fat/100)
+		data.FlourIn = fmt.Sprintf("%.0f", flour)
+		data.FlourOut = fmt.Sprintf("%.0f", flour)
+		data.HydrationOut = fmt.Sprintf("%.0f", flour*hydration/100)
+		data.SaltOut = fmt.Sprintf("%.0f", flour*(salt/100))
+		data.SugarOut = fmt.Sprintf("%.0f", flour*(sugar/100))
+		data.LeavenerOut = fmt.Sprintf("%.0f", flour*(leaveningAmount/100))
 
+		tangzhongCheck(data, tangzhongPercentage, problems)
 	}
 }
 
 func tangzhongCheck(data *models.RecipeData, tangzhongPercentage float64, problems models.FormErrors) {
 	if tangzhongPercentage > 0 {
 		flour := stringToFloat("flour", data.FlourIn, problems)
-		hydration := stringToFloat("hydration", data.HydrationIn, problems)
+		hydrationPercent := stringToFloat("hydration", data.HydrationIn, problems)
+		hydration := flour * hydrationPercent / 100
+		tRatio := stringToFloat("tangzhong ratio", data.TanghzhongRatio, problems)
 
-		tFlour := (tangzhongPercentage / 100) * flour
-		tHydration := tFlour * 5
+		tFlour := (tangzhongPercentage / 100) / (1 + tRatio) * flour
+		tHydration := tFlour * tRatio
 
-		data.TangzhongFlour = fmt.Sprint(tFlour)
-		data.TangzhongHydration = fmt.Sprint(tHydration)
-		data.FlourOut = fmt.Sprint(flour - tFlour)
-		data.HydrationOut = fmt.Sprint(hydration - tHydration)
+		data.TangzhongFlour = fmt.Sprintf("%.0f", tFlour)
+		data.TangzhongHydration = fmt.Sprintf("%.0f", tHydration)
+		data.FlourOut = fmt.Sprintf("%.0f", flour-tFlour)
+		data.HydrationOut = fmt.Sprintf("%.0f", hydration-tHydration)
 	}
 }
 
