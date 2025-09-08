@@ -14,6 +14,11 @@ body {
     width: 150px;
 }
 
+.warning {
+    color: red;
+    font-weight: bold;
+}
+
 /*Tablets*/
 @media (min-width: 600px) {
     body {

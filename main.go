@@ -4,7 +4,9 @@ import (
 	"html/template"
 	"net/http"
 
+	"github.com/gwaDyckuL1/Ratio_Baking_Site/calculator"
 	"github.com/gwaDyckuL1/Ratio_Baking_Site/database"
+	"github.com/gwaDyckuL1/Ratio_Baking_Site/models"
 	_ "github.com/mattn/go-sqlite3"
 )
 
@@ -31,6 +33,7 @@ func main() {
 
 	router.HandleFunc("/calculator/", calculatorIndexHandler)
 	router.HandleFunc("/calculator/bread", breadCalcHandler)
+	router.HandleFunc("/calculator/results", calcResultsHandler)
 
 	server := http.Server{
 		Addr:    ":80",
@@ -101,6 +104,47 @@ func loginHandler(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		http.Error(w, "Template error", http.StatusInternalServerError)
 	}
+}
+
+func calcResultsHandler(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodPost {
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+		return
+	}
+
+	data := models.RecipeData{
+		Calculator:          r.FormValue("calculatorFor"),
+		SubCalculator:       r.FormValue("calculator-bread"),
+		Measurement:         r.FormValue("measurement"),
+		Shape:               r.FormValue("shape"),
+		Height:              r.FormValue("height"),
+		Width:               r.FormValue("width"),
+		Depth:               r.FormValue("depth"),
+		Diameter:            r.FormValue("diameter"),
+		FlourIn:             r.FormValue("flour"),
+		DoughWeight:         r.FormValue("dough-weight"),
+		HydrationIn:         r.FormValue("hydration"),
+		EggIn:               r.FormValue("egg"),
+		FatIn:               r.FormValue("fat"),
+		SugarIn:             r.FormValue("sugar"),
+		TangzhongPercentage: r.FormValue("tangzhong-percentage"),
+		TanghzhongRatio:     r.FormValue("tangzhong-ratio"),
+		SaltIn:              r.FormValue("salt"),
+		Leavener:            r.FormValue("leavener-choice"),
+		SourdoughIn:         r.FormValue("sourdough"),
+		YeastIn:             r.FormValue("yeast"),
+	}
+
+	problems := models.FormErrors{}
+
+	calculator.Calculator(&data, problems)
+
+	tmpl := template.Must(template.ParseFiles(
+		"templates/layout.html",
+		"templates/calculator/layout.html",
+		"templates/calculator/results.html",
+	))
+	tmpl.Execute(w, &data)
 }
 
 func registerHandler(w http.ResponseWriter, r *http.Request) {

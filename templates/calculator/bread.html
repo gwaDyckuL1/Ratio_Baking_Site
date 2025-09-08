@@ -15,15 +15,15 @@
             <h2>Instructions</h2>
         </div>
 
-        <select name="calculator-bread" id="calculator-bread">
-            <option value="">Choose an option</option>
-            <option value="flour-weight">Flour Weight</option>
-            <option value="total-weight">Total Weight</option>
-            <option value="pan-dimension">Pan Diminsions</option>
-        </select>
+        <form action="/calculator/results" method="post">
+            <select name="calculator-bread" id="calculator-bread">
+                <option value="">Choose an option</option>
+                <option value="flour-weight">Flour Weight</option>
+                <option value="total-weight">Total Weight</option>
+                <option value="pan-dimension">Pan Diminsions</option>
+            </select>
 
-        <form action="" method="post">
-
+            <input type="hidden" name="calculatorFor" value="bread">
             <div id="flour-weight" class="bread-options" style="display: none;">
                 <h3>Calculating Based On Flour Weight</h3>
             </div>
@@ -59,17 +59,17 @@
                         <input type="number" id="width" name="width">
                     </div>
                     <div class="bread-form">
-                        <label for="depth">Depth</label>
+                        <label for="depth-square">Depth</label>
                         <input type="number" id="depth-square" name="depth">
                     </div>
                 </div>
                 <div class="bread-form" id="round" style="display: none;">
                     <div class="bread-form">
-                        <label for="radius">Radius</label>
-                        <input type="number" id="radius" name="radius">
+                        <label for="diameter">Diameter</label>
+                        <input type="number" id="diameter" name="diameter">
                     </div>
                     <div class="bread-form">
-                        <label for="depth-circle">Depth</label>
+                        <label for="depth-round">Depth</label>
                         <input type="number" id="depth-round" name="depth">
                     </div>
                 </div>
@@ -77,15 +77,15 @@
 
             <div class="ingredient bread-form" id="flour-view" style="display: none;">
                 <label for="flour">Flour Weight</label>
-                <input type="number" id="flour" name="flour" required>
+                <input type="number" id="flour" name="flour">
             </div>
             <div class="ingredient bread-form" id="dough-weight-view" style="display: none;">
                 <label for="dough-weight">Final Dough Weight</label>
-                <input type="number" id="dough-weight" name="dough-weight" required>
+                <input type="number" id="dough-weight" name="dough-weight">
             </div>
             <div class="ingredient bread-form" id="hydration-view" style="display: none;">
                 <label for="hydration">Hydration Percentage</label>
-                <input type="number" id="hydration" name="hydration" required>
+                <input type="number" id="hydration" name="hydration">
             </div>
             <div class="ingredient bread-form" id="fat-view" style="display: none;">
                 <label for="fat">Fat Percentage</label>
@@ -94,6 +94,33 @@
             <div class="ingredient bread-form" id="sugar-view" style="display: none;">
                 <label for="sugar">Sugar Percentage</label>
                 <input type="number" id="sugar" name="sugar">
+            </div>
+            <div class="ingredient bread-form" id="salt-view" style="display: none;">
+                <label for="salt">Salt Percentage</label>
+                <input type="number" id="salt" name="salt">
+            </div>
+            <div class="ingredient bread-form" id="egg-view" style="display: none;">
+                <label for="egg">Egg Percentage</label>
+                <input type="number" id="egg" name="egg">
+            </div>
+
+            <div id="leavener-view" class="bread-options" style="display: none">
+                <div class="bread-form">
+                    <label for="leavener-choice">Leavener</label>
+                    <select name="leavener-choice" id="leavener-choice" required>
+                        <option value="">Choose Leavener</option>
+                        <option value="Sourdough">Sourdough</option> 
+                        <option value="Yeast">Yeast</option>
+                    </select>
+                </div>
+                <div class="ingredient bread-form" id="sourdough-view" style="display: none;">
+                    <label for="sourdough">Sourdough %</label>
+                    <input type="number" id="sourdough" name="sourdough">
+                </div>
+                <div class="ingredient bread-form" id="yeast-view" style="display: none;">
+                    <label for="yeast">Yeast %</label>
+                    <input type="number" id="yeast" name="yeast">
+                </div>
             </div>
 
             <div id="tangzhong-view" class="bread-options" style="display: none;">
@@ -109,9 +136,17 @@
                         <label for="tangzhong-percentage">Tangzhong Percentage</label>
                         <input type="number" id="tangzhong-percentage" name="tangzhong-percentage">
                     </div>
+                    <div class="bread-form">
+                        <label for="tangzhong-ratio">Hydration Multiplier</label>
+                        <input type="number" id="tangzhong-ratio" name="tangzhong-ratio">
+                    </div>
+                    <div class="bread-form warning">
+                        <p id="all-tangzhong" style="display: none;">All desired hydration will be used in Tangzhong!</p>
+                        <p id="hydration-needed" style="display: none;">Check hydration and tangzhong numbers. Desired hydration is to low for tanzhong ratio.</p>
+                    </div>
                 </div>
             </div>
-            <input id="bread-submission" type="button" value="Submit" style="display: none;">
+            <input id="bread-submission" type="submit" value="Submit" style="display: none;">
         </form>
 
         <script src="/static/js/bread.js"></script>   
