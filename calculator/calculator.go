@@ -16,6 +16,7 @@ func Calculator(data *models.RecipeData, problems models.FormErrors) {
 
 func breadCalculator(data *models.RecipeData, problems models.FormErrors) {
 
+	egg := stringToFloat("egg", data.EggIn, problems)
 	fat := stringToFloat("fat", data.FatIn, problems)
 	hydration := stringToFloat("hydration", data.HydrationIn, problems)
 	salt := stringToFloat("salt", data.SaltIn, problems)
@@ -49,6 +50,9 @@ func breadCalculator(data *models.RecipeData, problems models.FormErrors) {
 	if data.SubCalculator == "flour-weight" {
 		flour := stringToFloat("flour", data.FlourIn, problems)
 		data.FlourOut = fmt.Sprint(flour)
+		eggGrams := (egg / 100) * flour
+		data.EggGrams = fmt.Sprintf("%.0f", eggGrams)
+		data.EggWhole = fmt.Sprintf("%.1f", eggGrams/56.00)
 		data.FatOut = fmt.Sprint(int((fat / 100) * flour))
 		data.HydrationOut = fmt.Sprint(int((hydration / 100) * flour))
 		data.SaltOut = fmt.Sprint(int((salt / 100) * flour))
@@ -61,6 +65,9 @@ func breadCalculator(data *models.RecipeData, problems models.FormErrors) {
 		doughWeight := stringToFloat("Total Dough Weight", data.DoughWeight, problems)
 		totalPercent := 100 + hydration + fat + sugar + salt + leaveningAmount
 		flour := (100 / totalPercent) * doughWeight
+		eggGrams := (egg / 100) * flour
+		data.EggGrams = fmt.Sprintf("%.0f", eggGrams)
+		data.EggWhole = fmt.Sprintf("%.1f", eggGrams/56.00)
 		data.FatOut = fmt.Sprintf("%.0f", flour*fat/100)
 		data.FlourIn = fmt.Sprintf("%.0f", flour)
 		data.FlourOut = fmt.Sprintf("%.0f", flour)
@@ -103,6 +110,9 @@ func breadCalculator(data *models.RecipeData, problems models.FormErrors) {
 		fmt.Println("Total dough weight: ", doughWeight)
 		totalPercent := 100 + hydration + fat + sugar + salt + leaveningAmount
 		flour := (100 / totalPercent) * doughWeight
+		eggGrams := (egg / 100) * flour
+		data.EggGrams = fmt.Sprintf("%.0f", eggGrams)
+		data.EggWhole = fmt.Sprintf("%.1f", eggGrams/56.00)
 		data.FatOut = fmt.Sprintf("%.0f", flour*fat/100)
 		data.FlourIn = fmt.Sprintf("%.0f", flour)
 		data.FlourOut = fmt.Sprintf("%.0f", flour)

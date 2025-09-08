@@ -21,29 +21,26 @@ document.addEventListener("DOMContentLoaded", function() {
         })
         if (selection != '' ){
             document.getElementById('bread-submission').style.display = 'block';
-            document.getElementById('tangzhong-view').style.display = 'block';
+            document.getElementById('egg-view').style.display = 'flex';
+            document.getElementById('fat-view').style.display = 'flex';
+            document.getElementById('hydration-view').style.display = 'flex';
+            document.getElementById('hydration').required = true;
             document.getElementById('leavener-view').style.display = 'block';
+            document.getElementById('salt-view').style.display = 'flex';
+            document.getElementById('sugar-view').style.display = 'flex';
+            document.getElementById('tangzhong-view').style.display = 'block';
+
 
         }
         if (selection === 'flour-weight') {
             document.getElementById('flour-weight').style.display = 'flex';
             document.getElementById('flour-view').style.display = 'flex';
             document.getElementById('flour').required = true;
-            document.getElementById('hydration-view').style.display = 'flex';
-            document.getElementById('hydration').required = true;
-            document.getElementById('fat-view').style.display = 'flex';
-            document.getElementById('sugar-view').style.display = 'flex';
-
         }
         if (selection === 'total-weight') {
             document.getElementById('total-weight').style.display = 'flex';
             document.getElementById('dough-weight-view').style.display = 'flex';
-            document.getElementById('dough-weight').required = true;
-            document.getElementById('hydration-view').style.display = 'flex';
-            document.getElementById('hydration').required = true;
-            document.getElementById('fat-view').style.display = 'flex';
-            document.getElementById('sugar-view').style.display = 'flex';
-            
+            document.getElementById('dough-weight').required = true;            
         }
         if (selection === 'pan-dimension') {
             document.getElementById('pan-dimension').style.display = 'block';
@@ -59,10 +56,6 @@ document.addEventListener("DOMContentLoaded", function() {
                     document.getElementById('round').style.display = 'block'
                 }
             })
-            document.getElementById('hydration-view').style.display = 'flex';
-            document.getElementById('hydration').required = true;
-            document.getElementById('fat-view').style.display = 'flex';
-            document.getElementById('sugar-view').style.display = 'flex';
         }
 
         leavenerChoice.addEventListener('change', function() {

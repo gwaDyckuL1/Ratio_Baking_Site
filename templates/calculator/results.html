@@ -8,7 +8,7 @@
     <ul>
         <li>Flour: {{ .FlourOut }} grams</li>
         <li>Hydration {{ .HydrationOut }} grams</li>
-        <li>Salt: {{ .SaltOut }}</li>
+        <li>Salt: {{ .SaltOut }} grams</li>
         <li>
             {{ if eq .Leavener "Sourdough" }}
                 Sourdough: {{.LeavenerOut}} grams
@@ -17,6 +17,11 @@
                 Yeast: {{ .LeavenerOut }} grams
             {{ end }}
         </li>
+        {{ if .EggIn }}
+            <li>
+                Egg: {{ .EggGrams }} grams or {{ .EggWhole }} eggs
+            </li>
+        {{ end }}
         {{ if .FatIn }}
             <li>
                 Fat: {{ .FatOut }} grams

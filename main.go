@@ -124,6 +124,7 @@ func calcResultsHandler(w http.ResponseWriter, r *http.Request) {
 		FlourIn:             r.FormValue("flour"),
 		DoughWeight:         r.FormValue("dough-weight"),
 		HydrationIn:         r.FormValue("hydration"),
+		EggIn:               r.FormValue("egg"),
 		FatIn:               r.FormValue("fat"),
 		SugarIn:             r.FormValue("sugar"),
 		TangzhongPercentage: r.FormValue("tangzhong-percentage"),

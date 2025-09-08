@@ -20,6 +20,9 @@ type RecipeData struct {
 	FatOut              string
 	SugarIn             string
 	SugarOut            string
+	EggIn               string
+	EggGrams            string
+	EggWhole            string
 	TangzhongPercentage string
 	TanghzhongRatio     string
 	TangzhongFlour      string
