@@ -63,7 +63,7 @@ func breadCalculator(data *models.RecipeData, problems models.FormErrors) {
 	}
 	if data.SubCalculator == "total-weight" {
 		doughWeight := stringToFloat("Total Dough Weight", data.DoughWeight, problems)
-		totalPercent := 100 + hydration + fat + sugar + salt + leaveningAmount
+		totalPercent := 100 + hydration + egg + fat + sugar + salt + leaveningAmount
 		flour := (100 / totalPercent) * doughWeight
 		eggGrams := (egg / 100) * flour
 		data.EggGrams = fmt.Sprintf("%.0f", eggGrams)
@@ -97,7 +97,6 @@ func breadCalculator(data *models.RecipeData, problems models.FormErrors) {
 			radius := diameter / 2
 			volumn = math.Pi * math.Pow(radius, 2) * height
 		}
-		fmt.Println("Volumn is: ", volumn)
 		//total dough weight = volumn * density * fill
 		//starting with density of 1, like water
 		// fill is how full the pan should be before proofing and baking
@@ -107,8 +106,7 @@ func breadCalculator(data *models.RecipeData, problems models.FormErrors) {
 		} else {
 			doughWeight = volumn * 1.00 * 0.5
 		}
-		fmt.Println("Total dough weight: ", doughWeight)
-		totalPercent := 100 + hydration + fat + sugar + salt + leaveningAmount
+		totalPercent := 100 + hydration + egg + fat + sugar + salt + leaveningAmount
 		flour := (100 / totalPercent) * doughWeight
 		eggGrams := (egg / 100) * flour
 		data.EggGrams = fmt.Sprintf("%.0f", eggGrams)
