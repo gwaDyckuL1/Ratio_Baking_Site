@@ -129,8 +129,8 @@ func TestTotalWeight(t *testing.T) {
 
 	Calculator(&data, problems)
 
-	if data.FlourIn != "200" {
-		t.Errorf("Total Weight: Expected 200, Got: %s", data.FlourIn)
+	if data.FlourOut != "200" {
+		t.Errorf("Total Weight: Expected 200, Got: %s", data.FlourOut)
 	}
 }
 
@@ -172,8 +172,8 @@ func TestPanDimensions(t *testing.T) {
 
 			Calculator(&data, problems)
 
-			if data.FlourIn != tt.expected {
-				t.Errorf("Got: %s, Expected: %s", data.FlourIn, tt.expected)
+			if data.DoughWeight != tt.expected {
+				t.Errorf("Got: %s, Expected: %s", data.DoughWeight, tt.expected)
 			}
 		})
 	}
