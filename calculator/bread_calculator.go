@@ -96,7 +96,7 @@ func calculateIngredients(data *models.RecipeData, problems models.FormErrors) {
 	data.EggWhole = fmt.Sprintf("%.1f", eggGrams/56.00)
 	data.FatOut = fmt.Sprintf("%.0f", flour*fatPercent/100)
 	data.FlourOut = fmt.Sprintf("%.0f", flour-tFlour)
-	data.HydrationOut = fmt.Sprintf("%.0f", flour*hydrationPercent/100)
+	data.HydrationOut = fmt.Sprintf("%.0f", flour*hydrationPercent/100-tHydration)
 	data.SaltOut = fmt.Sprintf("%.0f", flour*(saltPercent/100))
 	data.SugarOut = fmt.Sprintf("%.0f", flour*(sugarPercent/100))
 	data.LeavenerOut = fmt.Sprintf("%.0f", flour*(leaveningAmount/100))
