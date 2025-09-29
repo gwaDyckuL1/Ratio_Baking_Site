@@ -20,7 +20,9 @@ func OpenDatabase() *sql.DB {
 			name TEXT,
 			email TEXT NOT NULL,
 			password TEXT NOT NULL,
-			create_date DATETIME DEFAULT CURRENT_TIMESTAMP
+			create_date DATETIME DEFAULT CURRENT_TIMESTAMP,
+			last_login DATETIME,
+			role TEXT
 		);`,
 		`CREATE TABLE IF NOT EXISTS recipe (
 			id INTEGER PRIMARY KEY AUTOINCREMENT,
