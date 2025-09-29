@@ -34,3 +34,10 @@ type RecipeData struct {
 	SourdoughIn         string
 	YeastIn             string
 }
+
+type RegistrationData struct {
+	Username string
+	Name     string
+	Email    string
+	Password string
+}

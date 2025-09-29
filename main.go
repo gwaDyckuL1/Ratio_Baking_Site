@@ -1,9 +1,11 @@
 package main
 
 import (
+	"database/sql"
 	"html/template"
 	"net/http"
 
+	accounts "github.com/gwaDyckuL1/Ratio_Baking_Site/Accounts"
 	"github.com/gwaDyckuL1/Ratio_Baking_Site/calculator"
 	"github.com/gwaDyckuL1/Ratio_Baking_Site/database"
 	"github.com/gwaDyckuL1/Ratio_Baking_Site/models"
@@ -30,6 +32,7 @@ func main() {
 	router.HandleFunc("/contact", contactHandler)
 	router.HandleFunc("/login", loginHandler)
 	router.HandleFunc("/register", registerHandler)
+	router.HandleFunc("/registrationSubmit", registerationSubmitHandler(database))
 
 	router.HandleFunc("/calculator/", calculatorIndexHandler)
 	router.HandleFunc("/calculator/bread", breadCalcHandler)
@@ -151,5 +154,25 @@ func registerHandler(w http.ResponseWriter, r *http.Request) {
 	err := templates["register"].Execute(w, nil)
 	if err != nil {
 		http.Error(w, "Template error", http.StatusInternalServerError)
+	}
+}
+
+func registerationSubmitHandler(db *sql.DB) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		if r.Method != http.MethodPost {
+			http.Redirect(w, r, "/", http.StatusSeeOther)
+			return
+		}
+
+		data := models.RegistrationData{
+			Username: r.FormValue("username"),
+			Name:     r.FormValue("name"),
+			Email:    r.FormValue("email"),
+			Password: r.FormValue("passwrod"),
+		}
+
+		if accounts.CheckUserName(data.Username, db) {
+			// return issue
+		}
 	}
 }
