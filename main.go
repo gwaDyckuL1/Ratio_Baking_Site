@@ -2,7 +2,9 @@ package main
 
 import (
 	"database/sql"
+	"encoding/json"
 	"html/template"
+	"log"
 	"net/http"
 
 	accounts "github.com/gwaDyckuL1/Ratio_Baking_Site/Accounts"
@@ -115,6 +117,11 @@ func calcResultsHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	err := r.ParseForm()
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+	}
+
 	data := models.RecipeData{
 		Calculator:          r.FormValue("calculatorFor"),
 		SubCalculator:       r.FormValue("calculator-bread"),
@@ -164,6 +171,17 @@ func registerationSubmitHandler(db *sql.DB) http.HandlerFunc {
 			return
 		}
 
+		type Response struct {
+			Ok      bool   `json:"ok"`
+			Field   string `json:"field,omitempty"`
+			Message string `json:"message,omitempty"`
+		}
+
+		err := r.ParseForm()
+		if err != nil {
+			w.WriteHeader(http.StatusBadRequest)
+		}
+
 		data := models.RegistrationData{
 			Username: r.FormValue("username"),
 			Name:     r.FormValue("name"),
@@ -171,8 +189,51 @@ func registerationSubmitHandler(db *sql.DB) http.HandlerFunc {
 			Password: r.FormValue("passwrod"),
 		}
 
-		if accounts.CheckUserName(data.Username, db) {
-			// return issue
+		emailUsed, err := accounts.CheckEmail(data.Email, db)
+		if err != nil && err != sql.ErrNoRows {
+			log.Printf("Database error checking email: %v", err)
+			http.Error(w, "Internal Server Error. Please try again later", http.StatusInternalServerError)
+			return
 		}
+		if emailUsed {
+			json.NewEncoder(w).Encode(Response{
+				Ok:      false,
+				Field:   "email",
+				Message: "This email already has an account.",
+			})
+			return
+		}
+
+		usernameUsed, err := accounts.CheckUserName(data.Username, db)
+		if err != nil && err != sql.ErrNoRows {
+			log.Printf("Database error checking username: %v", err)
+			http.Error(w, "Internal Server Error. Please try again later", http.StatusInternalServerError)
+			return
+		}
+		if usernameUsed {
+			json.NewEncoder(w).Encode(Response{
+				Ok:      false,
+				Field:   "username",
+				Message: "Username not available.  Please choose another.",
+			})
+			return
+		}
+
+		//Need to hash password still
+		hashPassword := 0
+
+		_, err = db.Exec(`INSERT INTO 
+			users (username, name, email, password, role, create_date)
+			VALUES (?, ?, ?, ?, ?, DATETIME("NOW"))`,
+			data.Username, data.Name, data.Email, hashPassword, "User")
+
+		if err != nil {
+			log.Printf("Error inserting new user in database. Error: %v", err)
+			w.WriteHeader(http.StatusInternalServerError)
+			json.NewEncoder(w).Encode(Response{Ok: false, Message: "Server error. Try again later."})
+			return
+		}
+
+		json.NewEncoder(w).Encode(Response{Ok: true, Message: "Registration Successful"})
 	}
 }

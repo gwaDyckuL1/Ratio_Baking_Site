@@ -18,7 +18,7 @@ func OpenDatabase() *sql.DB {
 			id INTEGER PRIMARY KEY AUTOINCREMENT,
 			username TEXT NOT NULL UNIQUE,
 			name TEXT,
-			email TEXT NOT NULL,
+			email TEXT NOT NULL UNIQUE,
 			password TEXT NOT NULL,
 			create_date DATETIME DEFAULT CURRENT_TIMESTAMP,
 			last_login DATETIME,
