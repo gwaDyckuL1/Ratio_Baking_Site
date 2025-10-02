@@ -9,7 +9,7 @@
     {{define "content"}}
 
         <main>
-            <form action="/register" method="post">
+            <form action="/register" method="post" id="registration">
                 <h1>Register</h1>
                 <h2>Why Create An Account?</h2>
                 <p>You can save recipies to your account....maybe more reasons some other day.</p>
@@ -20,10 +20,12 @@
                 <p>
                     <label for="username">Username:</label>
                     <input type="text" name="username" id="username" required>
+                    <p class="warning" id="username-error" style="display: none;"></p>
                 </p>
                 <p>
                     <label for="email">Email:</label>
                     <input type="email" name="email" id="email" required>
+                    <p class="warning" id="email-error" style="display: none;"></p>
                 </p>
                 <p>
                     <label for="password">Password:</label>
@@ -40,5 +42,6 @@
         </main>
 
     {{end}}
+    <script src="/static/js/registration.js"></script>
 </body>
 </html>

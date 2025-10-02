@@ -196,11 +196,15 @@ func registerationSubmitHandler(db *sql.DB) http.HandlerFunc {
 			return
 		}
 		if emailUsed {
-			json.NewEncoder(w).Encode(Response{
-				Ok:      false,
-				Field:   "email",
-				Message: "This email already has an account.",
-			})
+			if r.Header.Get("Accept") == "application/json" {
+				json.NewEncoder(w).Encode(Response{
+					Ok:      false,
+					Field:   "email",
+					Message: "This email already has an account.",
+				})
+			} else {
+
+			}
 			return
 		}
 
