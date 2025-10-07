@@ -3,12 +3,21 @@ package database
 import (
 	"database/sql"
 	"log"
+	"os"
 
+	"github.com/joho/godotenv"
 	_ "github.com/mattn/go-sqlite3"
 )
 
 func OpenDatabase() *sql.DB {
-	db, err := sql.Open("sqlite3", "database/ratio.db")
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal("Error loading .env file", err)
+	}
+
+	dbPath := os.Getenv("DATABASE_PATH")
+
+	db, err := sql.Open("sqlite3", dbPath)
 	if err != nil {
 		log.Fatal("Failed to open database. Error:", err)
 	}

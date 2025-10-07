@@ -203,7 +203,14 @@ func registerationSubmitHandler(db *sql.DB) http.HandlerFunc {
 					Message: "This email already has an account.",
 				})
 			} else {
-
+				tmpl := template.Must(template.ParseFiles(
+					"templates/layout",
+					"templates/register",
+				))
+				tmpl.Execute(w, map[string]string{
+					"ErrorField": "email",
+					"ErrorMsg":   "This email already has an account.",
+				})
 			}
 			return
 		}
@@ -215,11 +222,22 @@ func registerationSubmitHandler(db *sql.DB) http.HandlerFunc {
 			return
 		}
 		if usernameUsed {
-			json.NewEncoder(w).Encode(Response{
-				Ok:      false,
-				Field:   "username",
-				Message: "Username not available.  Please choose another.",
-			})
+			if r.Header.Get("Accept") == "application/json" {
+				json.NewEncoder(w).Encode(Response{
+					Ok:      false,
+					Field:   "username",
+					Message: "Username not available.  Please choose another.",
+				})
+			} else {
+				tmpl := template.Must(template.ParseFiles(
+					"templates/layout",
+					"templates/register",
+				))
+				tmpl.Execute(w, map[string]string{
+					"ErrorField": "username",
+					"ErrorMsg":   "Username not available. Please choose another.",
+				})
+			}
 			return
 		}
 
