@@ -210,6 +210,7 @@ func registerationSubmitHandler(db *sql.DB) http.HandlerFunc {
 			return
 		}
 		if emailUsed {
+			fmt.Println("We have determined that email was used")
 			if r.Header.Get("Accept") == "application/json" {
 				json.NewEncoder(w).Encode(Response{
 					Ok:      false,
@@ -217,6 +218,7 @@ func registerationSubmitHandler(db *sql.DB) http.HandlerFunc {
 					Message: "This email already has an account.",
 				})
 			} else {
+				fmt.Println("Trying to reload the page")
 				tmpl := template.Must(template.ParseFiles(
 					"templates/layout.html",
 					"templates/register.html",
@@ -236,6 +238,8 @@ func registerationSubmitHandler(db *sql.DB) http.HandlerFunc {
 			return
 		}
 		if usernameUsed {
+			fmt.Println("We have determined that username was used")
+
 			if r.Header.Get("Accept") == "application/json" {
 				json.NewEncoder(w).Encode(Response{
 					Ok:      false,
