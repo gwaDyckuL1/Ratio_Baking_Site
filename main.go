@@ -3,9 +3,11 @@ package main
 import (
 	"database/sql"
 	"encoding/json"
+	"fmt"
 	"html/template"
 	"log"
 	"net/http"
+	"strings"
 
 	accounts "github.com/gwaDyckuL1/Ratio_Baking_Site/Accounts"
 	"github.com/gwaDyckuL1/Ratio_Baking_Site/calculator"
@@ -120,6 +122,7 @@ func calcResultsHandler(w http.ResponseWriter, r *http.Request) {
 	err := r.ParseForm()
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
+		return
 	}
 
 	data := models.RecipeData{
@@ -177,16 +180,27 @@ func registerationSubmitHandler(db *sql.DB) http.HandlerFunc {
 			Message string `json:"message,omitempty"`
 		}
 
-		err := r.ParseForm()
-		if err != nil {
-			w.WriteHeader(http.StatusBadRequest)
+		contentType := r.Header.Get("Content-Type")
+		if strings.HasPrefix(contentType, "multipart/form-data") {
+			err := r.ParseMultipartForm(10 << 20)
+			if err != nil {
+				http.Error(w, "Error parsing multipart form", http.StatusBadRequest)
+				return
+			}
+		} else {
+			err := r.ParseForm()
+			if err != nil {
+				w.WriteHeader(http.StatusBadRequest)
+				fmt.Println("There was a problem in parsing the form.")
+				return
+			}
 		}
 
 		data := models.RegistrationData{
 			Username: r.FormValue("username"),
 			Name:     r.FormValue("name"),
 			Email:    r.FormValue("email"),
-			Password: r.FormValue("passwrod"),
+			Password: r.FormValue("password"),
 		}
 
 		emailUsed, err := accounts.CheckEmail(data.Email, db)
@@ -204,8 +218,8 @@ func registerationSubmitHandler(db *sql.DB) http.HandlerFunc {
 				})
 			} else {
 				tmpl := template.Must(template.ParseFiles(
-					"templates/layout",
-					"templates/register",
+					"templates/layout.html",
+					"templates/register.html",
 				))
 				tmpl.Execute(w, map[string]string{
 					"ErrorField": "email",
@@ -230,8 +244,8 @@ func registerationSubmitHandler(db *sql.DB) http.HandlerFunc {
 				})
 			} else {
 				tmpl := template.Must(template.ParseFiles(
-					"templates/layout",
-					"templates/register",
+					"templates/layout.html",
+					"templates/register.html",
 				))
 				tmpl.Execute(w, map[string]string{
 					"ErrorField": "username",
@@ -242,11 +256,11 @@ func registerationSubmitHandler(db *sql.DB) http.HandlerFunc {
 		}
 
 		//Need to hash password still
-		hashPassword := 0
+		hashPassword := data.Password
 
 		_, err = db.Exec(`INSERT INTO 
 			users (username, name, email, password, role, create_date)
-			VALUES (?, ?, ?, ?, ?, DATETIME("NOW"))`,
+			VALUES (?, ?, ?, ?, ?, DATETIME("NOW"));`,
 			data.Username, data.Name, data.Email, hashPassword, "User")
 
 		if err != nil {

@@ -29,7 +29,7 @@
                     <label for="email">Email:</label>
                     <input type="email" name="email" id="email" required>
                     <p class="warning" id="email-error" style="display: none;"></p>
-                    {{ if eg .ErrorField "email" }}
+                    {{ if eq .ErrorField "email" }}
                         <p class="warning">{{ .ErrorMsg }}</p>
                     {{ end }}
                 </p>
@@ -46,9 +46,9 @@
                 </p>
                 <h2 id="registration-success" style="display: none; color: green;"></h2>
             </form>    
+            <script src="/static/js/registration.js"></script>
         </main>
 
     {{end}}
-    <script src="/static/js/registration.js"></script>
 </body>
 </html>

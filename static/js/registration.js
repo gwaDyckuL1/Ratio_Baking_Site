@@ -1,11 +1,13 @@
 document.getElementById("registration").addEventListener("submit", async function(e) {
     e.preventDefault();
-    
+
     const form = e.target;
     const formData = new FormData(form);
-
     const result = await fetch("/registrationSubmit", {
         method: "POST",
+        headers: {
+            "Accept": "application/json"
+        },
         body: formData,
     });
 
