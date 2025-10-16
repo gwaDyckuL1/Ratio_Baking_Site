@@ -9,7 +9,7 @@ func CheckEmail(email string, db *sql.DB) (bool, error) {
 		SELECT EXISTS (
 			SELECT 1
 			FROM users
-			WHERE email = ?
+			WHERE UPPER(email) = UPPER(?)
 		)
 	`
 	err := db.QueryRow(query, email).Scan(&exists)
@@ -26,7 +26,7 @@ func CheckUserName(username string, db *sql.DB) (bool, error) {
 		SELECT EXISTS (
 			SELECT 1
 			FROM users
-			WHERE username = ?
+			WHERE UPPER(username) = UPPER(?)
 		)
 	`
 	err := db.QueryRow(query, username).Scan(&exists)

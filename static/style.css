@@ -14,6 +14,33 @@ body {
     width: 150px;
 }
 
+label {
+    width: 150px;
+}
+
+#strength-bar {
+    background-color: red;
+    height: 100%;
+    transition: width 0.3s ease, background-color 0.3s ease;
+    width: 0;
+    
+}
+
+#strength-test {
+    font-size: 0.9rem;
+    font-weight: bold;
+    margin-top: 5px;
+    color: #333;
+}
+
+#strength-meter {
+    border-radius: 4px;
+    height: 8px;
+    margin-top: 5px;
+    overflow: hidden;
+    width: 100%;
+}
+
 .warning {
     color: red;
     font-weight: bold;

@@ -210,7 +210,6 @@ func registerationSubmitHandler(db *sql.DB) http.HandlerFunc {
 			return
 		}
 		if emailUsed {
-			fmt.Println("We have determined that email was used")
 			if r.Header.Get("Accept") == "application/json" {
 				json.NewEncoder(w).Encode(Response{
 					Ok:      false,
@@ -238,8 +237,6 @@ func registerationSubmitHandler(db *sql.DB) http.HandlerFunc {
 			return
 		}
 		if usernameUsed {
-			fmt.Println("We have determined that username was used")
-
 			if r.Header.Get("Accept") == "application/json" {
 				json.NewEncoder(w).Encode(Response{
 					Ok:      false,
