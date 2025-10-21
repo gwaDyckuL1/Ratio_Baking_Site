@@ -11,7 +11,6 @@ passwordInput.addEventListener("input", () => {
     if (/[a-z]/.test(password)) score++;
     if (/[0-9]/.test(password)) score++;
     if (/[^A-Za-z0-9]/.test(password)) score++;
-    console.log("password strength score = ", score);
 
     let strength = "";
     let width = "";

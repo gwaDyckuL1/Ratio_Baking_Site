@@ -1,6 +1,8 @@
 package accounts
 
-import "database/sql"
+import (
+	"database/sql"
+)
 
 func CheckEmail(email string, db *sql.DB) (bool, error) {
 	var exists bool

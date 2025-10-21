@@ -257,7 +257,14 @@ func registerationSubmitHandler(db *sql.DB) http.HandlerFunc {
 		}
 
 		//Need to hash password still
-		hashPassword := data.Password
+		hashPassword, err := accounts.HashPassword(data.Password)
+		if err != nil {
+			log.Printf("Error in hashing password: %v", err)
+			http.Error(w, "Internal Server Error. Please try again later", http.StatusInternalServerError)
+			return
+		}
+
+		fmt.Printf("Password: %s, Hash: %s", data.Password, hashPassword)
 
 		_, err = db.Exec(`INSERT INTO 
 			users (username, name, email, password, role, create_date)
