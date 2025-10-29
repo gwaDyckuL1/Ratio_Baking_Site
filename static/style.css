@@ -4,17 +4,13 @@ body {
     margin: 0 auto;
 }
 
-.bread-form {
+.form-element {
     display: flex;
     align-items: center;
     margin-bottom: 8px;
 }
 
-.bread-form label {
-    width: 150px;
-}
-
-label {
+.form-element label {
     width: 150px;
 }
 

@@ -37,6 +37,7 @@ func main() {
 	router.HandleFunc("/login", loginHandler)
 	router.HandleFunc("/register", registerHandler)
 	router.HandleFunc("/registrationSubmit", registerationSubmitHandler(database))
+	router.HandleFunc("/loginSubmit", loginSubmitHandler(database))
 
 	router.HandleFunc("/calculator/", calculatorIndexHandler)
 	router.HandleFunc("/calculator/bread", breadCalcHandler)
@@ -113,6 +114,86 @@ func loginHandler(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+func loginSubmitHandler(db *sql.DB) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		if r.Method != http.MethodPost {
+			http.Redirect(w, r, "/", http.StatusSeeOther)
+		}
+
+		err := r.ParseForm()
+		if err != nil {
+			http.Error(w, "Error Parsing Form", http.StatusBadRequest)
+		}
+
+		data := models.Login{
+			Useername: r.FormValue("username"),
+			Password:  r.FormValue("password"),
+		}
+
+		savedPassword, err := accounts.GetPassword(data.Useername, db)
+		if err != nil {
+			if err == sql.ErrNoRows {
+				if r.Header.Get("Accept") == "application/json" {
+					json.NewEncoder(w).Encode(models.Response{
+						Ok:      false,
+						Field:   "login-error",
+						Message: "The username or passwrod is incorrect.",
+					})
+				} else {
+					tmpl := template.Must(template.ParseFiles(
+						"templates/layout.html",
+						"templates/login.html",
+					))
+					tmpl.Execute(w, map[string]string{
+						"ErrorField": "login-error",
+						"ErrorMsg":   "The username or passwrod is incorrect.",
+					})
+				}
+			} else {
+				if r.Header.Get("Accept") == "application/json" {
+					json.NewEncoder(w).Encode(models.Response{
+						Ok:      false,
+						Field:   "login-error",
+						Message: "Internal failure. Please try again later.",
+					})
+				} else {
+					tmpl := template.Must(template.ParseFiles(
+						"templates/layout.html",
+						"templates/login.html",
+					))
+					tmpl.Execute(w, map[string]string{
+						"ErrorField": "login-error",
+						"ErrorMsg":   "Internal failure. Please try again later.",
+					})
+				}
+			}
+			return
+		}
+		passwordGood := accounts.CheckPassword(data.Password, savedPassword)
+
+		if passwordGood {
+
+		} else {
+			if r.Header.Get("Accept") == "application/json" {
+				json.NewEncoder(w).Encode(models.Response{
+					Ok:      false,
+					Field:   "login-error",
+					Message: "The username or passwrod is incorrect.",
+				})
+			} else {
+				tmpl := template.Must(template.ParseFiles(
+					"templates/layout.html",
+					"templates/login.html",
+				))
+				tmpl.Execute(w, map[string]string{
+					"ErrorField": "login-error",
+					"ErrorMsg":   "The username or passwrod is incorrect.",
+				})
+			}
+		}
+	}
+}
+
 func calcResultsHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodPost {
 		http.Redirect(w, r, "/", http.StatusSeeOther)
@@ -174,12 +255,6 @@ func registerationSubmitHandler(db *sql.DB) http.HandlerFunc {
 			return
 		}
 
-		type Response struct {
-			Ok      bool   `json:"ok"`
-			Field   string `json:"field,omitempty"`
-			Message string `json:"message,omitempty"`
-		}
-
 		contentType := r.Header.Get("Content-Type")
 		if strings.HasPrefix(contentType, "multipart/form-data") {
 			err := r.ParseMultipartForm(10 << 20)
@@ -211,7 +286,7 @@ func registerationSubmitHandler(db *sql.DB) http.HandlerFunc {
 		}
 		if emailUsed {
 			if r.Header.Get("Accept") == "application/json" {
-				json.NewEncoder(w).Encode(Response{
+				json.NewEncoder(w).Encode(models.Response{
 					Ok:      false,
 					Field:   "email",
 					Message: "This email already has an account.",
@@ -238,7 +313,7 @@ func registerationSubmitHandler(db *sql.DB) http.HandlerFunc {
 		}
 		if usernameUsed {
 			if r.Header.Get("Accept") == "application/json" {
-				json.NewEncoder(w).Encode(Response{
+				json.NewEncoder(w).Encode(models.Response{
 					Ok:      false,
 					Field:   "username",
 					Message: "Username not available.  Please choose another.",
@@ -256,7 +331,6 @@ func registerationSubmitHandler(db *sql.DB) http.HandlerFunc {
 			return
 		}
 
-		//Need to hash password still
 		hashPassword, err := accounts.HashPassword(data.Password)
 		if err != nil {
 			log.Printf("Error in hashing password: %v", err)
@@ -274,10 +348,10 @@ func registerationSubmitHandler(db *sql.DB) http.HandlerFunc {
 		if err != nil {
 			log.Printf("Error inserting new user in database. Error: %v", err)
 			w.WriteHeader(http.StatusInternalServerError)
-			json.NewEncoder(w).Encode(Response{Ok: false, Message: "Server error. Try again later."})
+			json.NewEncoder(w).Encode(models.Response{Ok: false, Message: "Server error. Try again later."})
 			return
 		}
 
-		json.NewEncoder(w).Encode(Response{Ok: true, Message: "Registration Successful"})
+		json.NewEncoder(w).Encode(models.Response{Ok: true, Message: "Registration Successful"})
 	}
 }
