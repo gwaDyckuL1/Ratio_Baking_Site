@@ -1,0 +1,12 @@
+package accounts
+
+import (
+	"crypto/rand"
+	"encoding/hex"
+)
+
+func NewSessionID() string {
+	b := make([]byte, 32)
+	rand.Read(b)
+	return hex.EncodeToString(b)
+}

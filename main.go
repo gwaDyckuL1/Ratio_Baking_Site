@@ -8,6 +8,7 @@ import (
 	"log"
 	"net/http"
 	"strings"
+	"time"
 
 	accounts "github.com/gwaDyckuL1/Ratio_Baking_Site/Accounts"
 	"github.com/gwaDyckuL1/Ratio_Baking_Site/calculator"
@@ -172,6 +173,22 @@ func loginSubmitHandler(db *sql.DB) http.HandlerFunc {
 		passwordGood := accounts.CheckPassword(data.Password, savedPassword)
 
 		if passwordGood {
+			sessionID := accounts.NewSessionID()
+
+			_, err = db.Exec(`
+				INSERT INTO sessions (user_id, session_token)
+				VALUES (?, ?)
+				`, data.Useername, sessionID)
+			if err != nil {
+				log.Printf("Error in saving session cookie. %v", err)
+			}
+
+			_, err = db.Exec(`
+				INSERT INTO users (last_login)
+				VALUES (?)`, time.Now())
+			if err != nil {
+				log.Printf("Error saving last login for %v. %v", data.Useername, err)
+			}
 
 		} else {
 			if r.Header.Get("Accept") == "application/json" {
