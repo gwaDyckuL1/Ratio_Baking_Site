@@ -40,6 +40,12 @@ type RecipeData struct {
 	YeastIn             string
 }
 
+type Session struct {
+	LoggedIn bool
+	Username string
+	Name     string
+}
+
 type RegistrationData struct {
 	Username string
 	Name     string

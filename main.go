@@ -73,11 +73,24 @@ func loadCalcPages() {
 	}
 }
 
-func indexHandler(w http.ResponseWriter, r *http.Request) {
-	err := templates["index"].Execute(w, nil)
-	if err != nil {
-		http.Error(w, "Template error", http.StatusInternalServerError)
+func indexHandler(db *sql.DB) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+
+		var sessionInfo models.Session
+
+		sessionToken, err := r.Cookie("session-token")
+		if err != nil {
+			sessionInfo.LoggedIn = false
+		}
+
+		sessionInfo = accounts.ActiveSession(db, sessionToken.Value)
+
+		err = templates["index"].Execute(w, nil)
+		if err != nil {
+			http.Error(w, "Template error", http.StatusInternalServerError)
+		}
 	}
+
 }
 
 func aboutHandler(w http.ResponseWriter, r *http.Request) {
@@ -189,6 +202,15 @@ func loginSubmitHandler(db *sql.DB) http.HandlerFunc {
 			if err != nil {
 				log.Printf("Error saving last login for %v. %v", data.Useername, err)
 			}
+
+			http.SetCookie(w, &http.Cookie{
+				Name:     "session-token",
+				Value:    sessionID,
+				Path:     "/",
+				HttpOnly: true,
+				Secure:   false, //will need to change to secure
+				SameSite: http.SameSiteStrictMode,
+			})
 
 		} else {
 			if r.Header.Get("Accept") == "application/json" {
