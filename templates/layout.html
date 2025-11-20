@@ -13,8 +13,14 @@
         <a href="/about">About</a>
         <a href="/contact">Contact</a>
         <a href="/register">Register</a>
-        <a href="/login">Login</a>
         <a href="/calculator/">Calculator</a>
+        <div>
+            {{ if .LoggedIn }}
+                <a href="/logout">Log Out</a>
+            {{ else }}
+                <a href="/login">Login</a>
+            {{ end }}
+        </div>
     </nav>
     <hr>
 

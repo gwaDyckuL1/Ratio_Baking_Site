@@ -5,18 +5,24 @@ import (
 	"database/sql"
 	"encoding/hex"
 	"fmt"
+	"net/http"
 
 	"github.com/gwaDyckuL1/Ratio_Baking_Site/models"
 )
 
-func ActiveSession(db *sql.DB, sessionToken string) models.Session {
+func ActiveSession(db *sql.DB, r *http.Request) models.Session {
 	var userID string
 	var s models.Session
 
-	err := db.QueryRow(`
+	sessionToken, err := r.Cookie("session-token")
+	if err != nil {
+		s.LoggedIn = false
+	}
+
+	err = db.QueryRow(`
 		SELECT user_id 
 		FROM sessions 
-		WHERE session_token = ?`, sessionToken).Scan(&userID)
+		WHERE session_token = ?`, sessionToken.Value).Scan(&userID)
 	if err == sql.ErrNoRows {
 		fmt.Println("No session found.")
 		return models.Session{
@@ -31,7 +37,7 @@ func ActiveSession(db *sql.DB, sessionToken string) models.Session {
 	err = db.QueryRow(`
 		SELECT name, username
 		FROM users
-		WHERE user_id = ?
+		WHERE id = ?
 	`, userID).Scan(&s.Name, &s.Username)
 	if err == sql.ErrNoRows {
 		fmt.Println("User Id not found")

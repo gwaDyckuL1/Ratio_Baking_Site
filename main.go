@@ -32,13 +32,13 @@ func main() {
 	fs := http.FileServer(http.Dir("static"))
 	router.Handle("/static/", http.StripPrefix("/static/", fs))
 
-	router.HandleFunc("/", indexHandler)
+	router.HandleFunc("/", indexHandler(database))
 	router.HandleFunc("/about", aboutHandler)
 	router.HandleFunc("/contact", contactHandler)
 	router.HandleFunc("/login", loginHandler)
+	router.HandleFunc("/loginSubmit", loginSubmitHandler(database))
 	router.HandleFunc("/register", registerHandler)
 	router.HandleFunc("/registrationSubmit", registerationSubmitHandler(database))
-	router.HandleFunc("/loginSubmit", loginSubmitHandler(database))
 
 	router.HandleFunc("/calculator/", calculatorIndexHandler)
 	router.HandleFunc("/calculator/bread", breadCalcHandler)
@@ -76,16 +76,9 @@ func loadCalcPages() {
 func indexHandler(db *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 
-		var sessionInfo models.Session
+		sessionInfo := accounts.ActiveSession(db, r)
 
-		sessionToken, err := r.Cookie("session-token")
-		if err != nil {
-			sessionInfo.LoggedIn = false
-		}
-
-		sessionInfo = accounts.ActiveSession(db, sessionToken.Value)
-
-		err = templates["index"].Execute(w, nil)
+		err := templates["index"].Execute(w, sessionInfo)
 		if err != nil {
 			http.Error(w, "Template error", http.StatusInternalServerError)
 		}
@@ -130,8 +123,10 @@ func loginHandler(w http.ResponseWriter, r *http.Request) {
 
 func loginSubmitHandler(db *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
+
 		if r.Method != http.MethodPost {
 			http.Redirect(w, r, "/", http.StatusSeeOther)
+			return
 		}
 
 		err := r.ParseForm()
@@ -144,7 +139,9 @@ func loginSubmitHandler(db *sql.DB) http.HandlerFunc {
 			Password:  r.FormValue("password"),
 		}
 
-		savedPassword, err := accounts.GetPassword(data.Useername, db)
+		userID, savedPassword, err := accounts.GetPassword(data.Useername, db)
+		fmt.Println("Problem getting password ", err, "Saved Password is: ", savedPassword)
+		fmt.Println("Input password: ", data.Password)
 		if err != nil {
 			if err == sql.ErrNoRows {
 				if r.Header.Get("Accept") == "application/json" {
@@ -184,21 +181,23 @@ func loginSubmitHandler(db *sql.DB) http.HandlerFunc {
 			return
 		}
 		passwordGood := accounts.CheckPassword(data.Password, savedPassword)
-
+		fmt.Println("Password is ", passwordGood)
 		if passwordGood {
 			sessionID := accounts.NewSessionID()
 
 			_, err = db.Exec(`
 				INSERT INTO sessions (user_id, session_token)
 				VALUES (?, ?)
-				`, data.Useername, sessionID)
+				`, userID, sessionID)
 			if err != nil {
 				log.Printf("Error in saving session cookie. %v", err)
 			}
 
 			_, err = db.Exec(`
-				INSERT INTO users (last_login)
-				VALUES (?)`, time.Now())
+				UPDATE users 
+				SET last_login = ?
+				WHERE id = ?
+				`, time.Now(), userID)
 			if err != nil {
 				log.Printf("Error saving last login for %v. %v", data.Useername, err)
 			}
@@ -229,7 +228,13 @@ func loginSubmitHandler(db *sql.DB) http.HandlerFunc {
 					"ErrorMsg":   "The username or passwrod is incorrect.",
 				})
 			}
+			return
 		}
+		tmpl := template.Must(template.ParseFiles(
+			"templates/layout.html",
+			"templates/index.html",
+		))
+		tmpl.Execute(w, nil)
 	}
 }
 

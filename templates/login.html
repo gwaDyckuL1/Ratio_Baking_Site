@@ -9,7 +9,7 @@
     {{define "content"}}
         <h1>Welcome whomever you are!</h1>
         <div>
-            <form class="login" id="login" action="post">
+            <form class="login" id="login" method="post" action="/loginSubmit">
                 <div class="form-element">
                     <label for="username">Username</label>
                     <input type="text", id="username" name="username">
@@ -24,6 +24,8 @@
                 <div class="warning" id="login-error" style="display: none;">
                     {{ if eq .ErrorField "login-error" }}
                         <p class="warning">{{ .ErrorMsg }}</p>
+                    {{ else }}
+                        <p>Login Successful</p>
                     {{ end }}
                 </div>
             </form>
