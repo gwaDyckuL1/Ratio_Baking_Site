@@ -2,6 +2,11 @@ package models
 
 type FormErrors map[string]string
 
+type Login struct {
+	Useername string
+	Password  string
+}
+
 type RecipeData struct {
 	Calculator          string
 	SubCalculator       string
@@ -33,4 +38,23 @@ type RecipeData struct {
 	LeavenerOut         string
 	SourdoughIn         string
 	YeastIn             string
+}
+
+type Session struct {
+	LoggedIn bool
+	Username string
+	Name     string
+}
+
+type RegistrationData struct {
+	Username string
+	Name     string
+	Email    string
+	Password string
+}
+
+type Response struct {
+	Ok      bool   `json:"ok"`
+	Field   string `json:"field,omitempty"`
+	Message string `json:"message,omitempty"`
 }

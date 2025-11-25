@@ -3,12 +3,21 @@ package database
 import (
 	"database/sql"
 	"log"
+	"os"
 
+	"github.com/joho/godotenv"
 	_ "github.com/mattn/go-sqlite3"
 )
 
 func OpenDatabase() *sql.DB {
-	db, err := sql.Open("sqlite3", "database/ratio.db")
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal("Error loading .env file", err)
+	}
+
+	dbPath := os.Getenv("DATABASE_PATH")
+
+	db, err := sql.Open("sqlite3", dbPath)
 	if err != nil {
 		log.Fatal("Failed to open database. Error:", err)
 	}
@@ -18,7 +27,7 @@ func OpenDatabase() *sql.DB {
 			id INTEGER PRIMARY KEY AUTOINCREMENT,
 			username TEXT NOT NULL UNIQUE,
 			name TEXT,
-			email TEXT NOT NULL,
+			email TEXT NOT NULL UNIQUE,
 			password TEXT NOT NULL,
 			create_date DATETIME DEFAULT CURRENT_TIMESTAMP,
 			last_login DATETIME,
@@ -30,6 +39,14 @@ func OpenDatabase() *sql.DB {
 			recipe_name TEXT NOT NULL,
 			recipe_data TEXT NOT NULL,
 			create_date DATETIME DEFAULT CURRENT_TIMESTAMP,
+			FOREIGN KEY (user_id) REFERENCES users(id)
+		)`,
+		`CREATE TABLE IF NOT EXISTS sessions (
+			id INTEGER PRIMARY KEY AUTOINCREMENT,
+			user_id INTEGER NOT NULL,
+			session_token TEXT NOT NULL UNIQUE,
+			created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+			last_active DATETIME DEFAULT CURRENT_TIMESTAMP,
 			FOREIGN KEY (user_id) REFERENCES users(id)
 		)`,
 	}

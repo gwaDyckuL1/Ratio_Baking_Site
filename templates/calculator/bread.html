@@ -34,14 +34,14 @@
 
             <div id="pan-dimension" class="bread-options" style="display: none;">
                 <h3>Calculating Based on Pan Diminsions</h3>
-                <div class="bread-form">
+                <div class="form-element">
                     <label for="measurement">Measurement</label>
                     <select name="measurement" id="measurement">
                         <option value="inches">Inches</option>
                         <option value="centimeters">Centimeters</option>
                     </select>
                 </div>
-                <div class="bread-form">
+                <div class="form-element">
                     <label for="shape">Pan Shape</label>
                     <select name="shape" id="shape">
                         <option value="">Select a Shape</option>
@@ -49,63 +49,63 @@
                         <option value="round">Round</option>
                     </select>
                 </div>
-                <div class="bread-form" id="square" style="display: none;">
-                    <div class="bread-form">
+                <div class="form-element" id="square" style="display: none;">
+                    <div class="form-element">
                         <label for="height">Height</label>
                         <input type="number" id="height" name="height">
                     </div>
-                    <div class="bread-form">
+                    <div class="form-element">
                         <label for="width">Width</label>
                         <input type="number" id="width" name="width">
                     </div>
-                    <div class="bread-form">
+                    <div class="form-element">
                         <label for="depth-square">Depth</label>
                         <input type="number" id="depth-square" name="depth">
                     </div>
                 </div>
-                <div class="bread-form" id="round" style="display: none;">
-                    <div class="bread-form">
+                <div class="form-element" id="round" style="display: none;">
+                    <div class="form-element">
                         <label for="diameter">Diameter</label>
                         <input type="number" id="diameter" name="diameter">
                     </div>
-                    <div class="bread-form">
+                    <div class="form-element">
                         <label for="depth-round">Depth</label>
                         <input type="number" id="depth-round" name="depth">
                     </div>
                 </div>
             </div>
 
-            <div class="ingredient bread-form" id="flour-view" style="display: none;">
+            <div class="ingredient form-element" id="flour-view" style="display: none;">
                 <label for="flour">Flour Weight</label>
                 <input type="number" id="flour" name="flour">
             </div>
-            <div class="ingredient bread-form" id="dough-weight-view" style="display: none;">
+            <div class="ingredient form-element" id="dough-weight-view" style="display: none;">
                 <label for="dough-weight">Final Dough Weight</label>
                 <input type="number" id="dough-weight" name="dough-weight">
             </div>
-            <div class="ingredient bread-form" id="hydration-view" style="display: none;">
+            <div class="ingredient form-element" id="hydration-view" style="display: none;">
                 <label for="hydration">Hydration Percentage</label>
                 <input type="number" id="hydration" name="hydration">
             </div>
-            <div class="ingredient bread-form" id="fat-view" style="display: none;">
+            <div class="ingredient form-element" id="fat-view" style="display: none;">
                 <label for="fat">Fat Percentage</label>
                 <input type="number" id="fat" name="fat">
             </div>
-            <div class="ingredient bread-form" id="sugar-view" style="display: none;">
+            <div class="ingredient form-element" id="sugar-view" style="display: none;">
                 <label for="sugar">Sugar Percentage</label>
                 <input type="number" id="sugar" name="sugar">
             </div>
-            <div class="ingredient bread-form" id="salt-view" style="display: none;">
+            <div class="ingredient form-element" id="salt-view" style="display: none;">
                 <label for="salt">Salt Percentage</label>
                 <input type="number" id="salt" name="salt">
             </div>
-            <div class="ingredient bread-form" id="egg-view" style="display: none;">
+            <div class="ingredient form-element" id="egg-view" style="display: none;">
                 <label for="egg">Egg Percentage</label>
                 <input type="number" id="egg" name="egg">
             </div>
 
             <div id="leavener-view" class="bread-options" style="display: none">
-                <div class="bread-form">
+                <div class="form-element">
                     <label for="leavener-choice">Leavener</label>
                     <select name="leavener-choice" id="leavener-choice" required>
                         <option value="">Choose Leavener</option>
@@ -113,18 +113,18 @@
                         <option value="Yeast">Yeast</option>
                     </select>
                 </div>
-                <div class="ingredient bread-form" id="sourdough-view" style="display: none;">
+                <div class="ingredient form-element" id="sourdough-view" style="display: none;">
                     <label for="sourdough">Sourdough %</label>
                     <input type="number" id="sourdough" name="sourdough">
                 </div>
-                <div class="ingredient bread-form" id="yeast-view" style="display: none;">
+                <div class="ingredient form-element" id="yeast-view" style="display: none;">
                     <label for="yeast">Yeast %</label>
                     <input type="number" id="yeast" name="yeast">
                 </div>
             </div>
 
             <div id="tangzhong-view" class="bread-options" style="display: none;">
-                <div class="bread-form">
+                <div class="form-element">
                     <label for="tangzhong-choice">Tangzhong?</label>
                     <select name="tangzhong-choice" id="tangzhong-choice">
                         <option value="No">No</option> 
@@ -132,15 +132,15 @@
                     </select>
                 </div>
                 <div id="tangzhong-select" class="bread-options" style="display: none;">
-                    <div class="bread-form">
+                    <div class="form-element">
                         <label for="tangzhong-percentage">Tangzhong Percentage</label>
                         <input type="number" id="tangzhong-percentage" name="tangzhong-percentage">
                     </div>
-                    <div class="bread-form">
+                    <div class="form-element">
                         <label for="tangzhong-ratio">Hydration Multiplier</label>
                         <input type="number" id="tangzhong-ratio" name="tangzhong-ratio">
                     </div>
-                    <div class="bread-form warning">
+                    <div class="form-element warning">
                         <p id="all-tangzhong" style="display: none;">All desired hydration will be used in Tangzhong!</p>
                         <p id="hydration-needed" style="display: none;">Check hydration and tangzhong numbers. Desired hydration is to low for tanzhong ratio.</p>
                     </div>
