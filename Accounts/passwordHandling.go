@@ -2,14 +2,12 @@ package accounts
 
 import (
 	"database/sql"
-	"fmt"
 
 	"golang.org/x/crypto/bcrypt"
 )
 
 func CheckPassword(input, saved string) bool {
 	err := bcrypt.CompareHashAndPassword([]byte(saved), []byte(input))
-	fmt.Println("Check password err: ", err)
 	return err == nil
 }
 

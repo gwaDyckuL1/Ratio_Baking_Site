@@ -140,8 +140,6 @@ func loginSubmitHandler(db *sql.DB) http.HandlerFunc {
 		}
 
 		userID, savedPassword, err := accounts.GetPassword(data.Useername, db)
-		fmt.Println("Problem getting password ", err, "Saved Password is: ", savedPassword)
-		fmt.Println("Input password: ", data.Password)
 		if err != nil {
 			if err == sql.ErrNoRows {
 				if r.Header.Get("Accept") == "application/json" {
@@ -181,7 +179,6 @@ func loginSubmitHandler(db *sql.DB) http.HandlerFunc {
 			return
 		}
 		passwordGood := accounts.CheckPassword(data.Password, savedPassword)
-		fmt.Println("Password is ", passwordGood)
 		if passwordGood {
 			sessionID := accounts.NewSessionID()
 
