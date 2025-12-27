@@ -1,118 +1,149 @@
-document.addEventListener("DOMContentLoaded", function() {
-    const breadSelect = this.getElementById("calculator-bread");
-    const tangzhongChoice = this.getElementById("tangzhong-choice");
-    const leavenerChoice = this.getElementById('leavener-choice');
+//for choices made
+let breadSelect;
+let tangzhongChoice;
+let leavenerChoice;
+let panShape;
 
-    breadSelect.addEventListener("change", function() {
-        const selection = this.value;
+//for tangzhong checking
+let hydration;
+let tangzhongPercentage;
+let tangzhongRatio;
 
-        const breadOptions = document.querySelectorAll(".bread-options")
-        breadOptions.forEach(option => {
-            option.style.display = 'none';
-            document.getElementById('bread-submission').style.display = 'none';
+document.addEventListener("DOMContentLoaded", setup)
+
+function setup() {
+    breadSelect = document.getElementById("calculator-bread");
+    tangzhongChoice = document.getElementById("tangzhong-choice");
+    leavenerChoice = document.getElementById('leavener-choice');
+    panShape = document.getElementById("shape");
+
+    breadSelect.addEventListener("change", breadSelectChange);
+    tangzhongChoice.addEventListener("change", tangzhongChoiceChange);
+    leavenerChoice.addEventListener("change", leavenerChoiceChange);
+    panShape.addEventListener("change", panShapeChange);
+}
+
+function breadSelectChange() {
+    resetOptions();
+    switch (breadSelect.value) {
+        case "flour-weight":
+            show("flour-weight");
+            show("flour-view");
+            makeRequired("flour");
+            break;
+        case "total-weight":
+            show("total-weight");
+            show("dough-weight-view");
+            makeRequired("dough-weight");
+            break;
+        case "pan-dimension":
+            show("pan-dimension");
+            break;
+    }
+    if (breadSelect.value != "") {
+        document.querySelectorAll(".allRecipe").forEach(ingredient => {
+            ingredient.classList.remove("hidden");
         })
+        show("bread-submission");
+    }
+}
 
-        const ingredients = document.querySelectorAll(".ingredient")
-        ingredients.forEach(ingredient => {
-            ingredient.style.display = 'none';
-            document.getElementById('tangzhong-choice').value = 'No';
-            document.getElementById('leavener-choice').value = "Choose Leavener";
-            ingredient.querySelector("input").required = false;
-        })
-        if (selection != '' ){
-            document.getElementById('bread-submission').style.display = 'block';
-            document.getElementById('egg-view').style.display = 'flex';
-            document.getElementById('fat-view').style.display = 'flex';
-            document.getElementById('hydration-view').style.display = 'flex';
-            document.getElementById('hydration').required = true;
-            document.getElementById('leavener-view').style.display = 'block';
-            document.getElementById('salt-view').style.display = 'flex';
-            document.getElementById('sugar-view').style.display = 'flex';
-            document.getElementById('tangzhong-view').style.display = 'block';
+function leavenerChoiceChange() {
+    hide("sourdough-view");
+    hide("yeast-view");
+    switch (leavenerChoice.value) {
+        case "Sourdough":
+            show("sourdough-view");
+            break;
+        case "Yeast":
+            show("yeast-view");
+    }
+}
 
+function panShapeChange() {
+    hide("square");
+    hide("round");
+    switch (panShape.value) {
+        case "square":
+            show("square");
+            show("depth-view");
+            break;
+        case "round":
+            show("round");
+            show("depth-view");
+            break;
+    }
+}
 
-        }
-        if (selection === 'flour-weight') {
-            document.getElementById('flour-weight').style.display = 'flex';
-            document.getElementById('flour-view').style.display = 'flex';
-            document.getElementById('flour').required = true;
-        }
-        if (selection === 'total-weight') {
-            document.getElementById('total-weight').style.display = 'flex';
-            document.getElementById('dough-weight-view').style.display = 'flex';
-            document.getElementById('dough-weight').required = true;            
-        }
-        if (selection === 'pan-dimension') {
-            document.getElementById('pan-dimension').style.display = 'block';
-            document.getElementById('shape').addEventListener('change', function() {
-                const shape = this.value
-                document.getElementById('square').style.display = 'none'
-                document.getElementById('round').style.display = 'none'
+function tangzhongChoiceChange() {
+    hydration = document.getElementById("hydration");
+    tangzhongPercentage = document.getElementById("tangzhong-percentage");
+    tangzhongRatio = document.getElementById("tangzhong-ratio");
 
-                if (shape === 'square') {
-                    document.getElementById('square').style.display = 'block'
-                }
-                if (shape === 'round') {
-                    document.getElementById('round').style.display = 'block'
-                }
-            })
-        }
+    if (tangzhongChoice.value === "No") {
+        hide("tangzhong-select");
+        hydration.removeEventListener("input", onChanges)
+        tangzhongPercentage.removeEventListener("input", onChanges)
+        tangzhongRatio.removeEventListener("input", onChanges)
+    } else {
+        show("tangzhong-select");
+        hydration.addEventListener("input", onChanges)
+        tangzhongPercentage.addEventListener("input", onChanges)
+        tangzhongRatio.addEventListener("input", onChanges)
+    }
+}
 
-        leavenerChoice.addEventListener('change', function() {
-            const leavenerSelected = this.value;
-            if (leavenerSelected === '') {
-                document.getElementById('sourdough-view').style.display='none';
-                document.getElementById('yeast-view').style.display='none';
-                
-            }
-            if (leavenerSelected === 'Sourdough') {
-                document.getElementById('sourdough-view').style.display='flex';
-                document.getElementById('yeast-view').style.display='none';
-            }
-            if (leavenerSelected == 'Yeast') {
-                document.getElementById('yeast-view').style.display='flex';
-                document.getElementById('sourdough-view').style.display='none';
-            }
-        })
+function onChanges() {
+    let mainHydration = Number(hydration.value)
+    let tangPercentage = Number(tangzhongPercentage.value)
+    let tangRatio = Number(tangzhongRatio.value)
+    checkHydrationLevels(mainHydration, tangPercentage, tangRatio);
+}
 
-        tangzhongChoice.addEventListener('change', function() {
-            const tangzhonSelect = this.value;
-            if (tangzhonSelect === 'Yes') {
-                document.getElementById('tangzhong-select').style.display = 'block';
-                const tangzhongPercentageInput = document.getElementById("tangzhong-percentage");
-                const tangzhongRatioInput = document.getElementById("tangzhong-ratio")
-                const hydrationInput = document.getElementById("hydration")
-                tangzhongPercentageInput.addEventListener('input', function() {
-                    if (tangzhongRatioInput.value != "") {
-                        checkHydrationLevels(parseFloat(hydrationInput.value), parseFloat(tangzhongPercentageInput.value), parseFloat(tangzhongRatioInput.value));
-                    }
-                })
-                tangzhongRatioInput.addEventListener('input', function () {
-                    if (tangzhongPercentageInput.value != "") {
-                        checkHydrationLevels(parseFloat(hydrationInput.value), parseFloat(tangzhongPercentageInput.value), parseFloat(tangzhongRatioInput.value));
-                    }
-                })
-                hydrationInput.addEventListener("input", function() {
-                    if (tangzhongRatioInput.value != "" && tangzhongPercentageInput.value != "") {
-                        checkHydrationLevels(parseFloat(hydrationInput.value), parseFloat(tangzhongPercentageInput.value), parseFloat(tangzhongRatioInput.value));
-                    }
-                })
-            }
-            if (tangzhonSelect === 'No') {
-                document.getElementById('tangzhong-select').style.display = 'none';
-            }
-        })
+function checkHydrationLevels(mainHydration, tangPercentage, tangRatio) {
+    hide("all-tangzhong");
+    hide("hydration-needed");
+    const tangzhongHydration = (tangPercentage / (tangRatio + 1)) * tangRatio;
+
+    if (mainHydration === tangzhongHydration)  {
+        show("all-tangzhong");
+    }
+    if (mainHydration < tangzhongHydration) {
+        show("hydration-needed");
+    }
+}
+
+function resetOptions() {
+    document.querySelectorAll(".bread-options").forEach(option => {
+        option.classList.add("hidden");
     })
-})
 
-function checkHydrationLevels(hydration, tangzhongPercentage, tangzhongRatio) {
-    document.getElementById("all-tangzhong").style.display='none';
-    document.getElementById("hydration-needed").style.display='none';
-    const tangzhongHydration = (tangzhongPercentage / (tangzhongRatio + 1)) * tangzhongRatio;
-    if (hydration === tangzhongHydration)  {
-        document.getElementById("all-tangzhong").style.display='flex';
-    }
-    if (hydration < tangzhongHydration) {
-        document.getElementById("hydration-needed").style.display='flex';
-    }
+    document.querySelectorAll(".allRecipe").forEach(ingredient => {
+        ingredient.classList.add("hidden");
+    })
+    document.querySelectorAll("[required]").forEach(element => {
+        element.removeAttribute("required");
+    })
+    zeroField("flour");
+    zeroField("dough-weight");
+    hide("bread-submission");
+    hide("depth-view");
+    tangzhongChoice.value = "No";
+    tangzhongChoiceChange();
+}
+
+function makeRequired(id) {
+    document.getElementById(id).setAttribute("required", "true");
+}
+
+function hide(id) {
+    document.getElementById(id).classList.add("hidden");
+}
+
+function show(id) {
+    document.getElementById(id).classList.remove("hidden")
+}
+
+function zeroField(id) {
+    document.getElementById(id).value = "";
 }

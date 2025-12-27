@@ -33,7 +33,7 @@ func panDimension(data *models.RecipeData, problems models.FormErrors) {
 		volumn = height * width * depth
 	} else {
 		radius := diameter / 2
-		volumn = math.Pi * math.Pow(radius, 2) * height
+		volumn = math.Pi * math.Pow(radius, 2) * depth
 	}
 	doughWeight := 0.00
 	if fat > 0 {
