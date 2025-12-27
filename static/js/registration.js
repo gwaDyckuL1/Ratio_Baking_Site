@@ -86,7 +86,10 @@ document.getElementById("registration").addEventListener("submit", async functio
         console.log("Registration successful")
         document.getElementById("registration-success").innerText = data.message;
         document.getElementById("registration-success").style.display = "block";
-        form.reset();
+        document.getElementById("registration").style.display = "none";
+        setTimeout(() => {
+            window.location.href = "/login";
+        }, 2000);
     } else {
         if (data.field) {
             const errorMessage = document.getElementById(data.field + "-error");

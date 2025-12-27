@@ -7,7 +7,12 @@
 </head>
 <body>
     {{define "content"}}
-
+        <header>
+            {{ if .Session.LoggedIn }}
+                <h2>{{ .Session.Username }} is already logged in.</h2>
+                <p class="warning">To create an account. Please log out first.</p>
+            {{ end }}
+        </header>
         <main>
             <form action="/registrationSubmit" method="post" id="registration">
                 <h1>Register</h1>

@@ -3,8 +3,8 @@ package models
 type FormErrors map[string]string
 
 type Login struct {
-	Useername string
-	Password  string
+	Username string
+	Password string
 }
 
 type RecipeData struct {
@@ -57,4 +57,10 @@ type Response struct {
 	Ok      bool   `json:"ok"`
 	Field   string `json:"field,omitempty"`
 	Message string `json:"message,omitempty"`
+}
+
+type WebData struct {
+	RecipeData *RecipeData
+	Response   Response
+	Session    *Session
 }

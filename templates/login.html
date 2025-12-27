@@ -7,7 +7,11 @@
 </head>
 <body>
     {{define "content"}}
-        <h1>Welcome whomever you are!</h1>
+        {{ if .Session.LoggedIn }}
+            <h1>{{ .Session.Username }} is already logged in!</h1>
+        {{ else }}
+            <h1>Welcome whomever you are!</h1>
+        {{ end }}
         <div>
             <form class="login" id="login" method="post" action="/loginSubmit">
                 <div class="form-element">
@@ -22,8 +26,8 @@
                     <button type="submit">Submit</button>
                 </div>
                 <div class="warning" id="login-error" style="display: none;">
-                    {{ if eq .ErrorField "login-error" }}
-                        <p class="warning">{{ .ErrorMsg }}</p>
+                    {{ if eq .Response.Field "login-error" }}
+                        <p class="warning">{{ .Response.Message }}</p>
                     {{ else }}
                         <p>Login Successful</p>
                     {{ end }}

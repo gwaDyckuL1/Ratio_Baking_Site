@@ -14,6 +14,10 @@ body {
     width: 150px;
 }
 
+.hidden {
+    display: none;
+}
+
 #strength-bar {
     background-color: red;
     height: 100%;
