@@ -6,7 +6,6 @@ import (
 	"html/template"
 	"log"
 	"net/http"
-	"time"
 
 	accounts "github.com/gwaDyckuL1/Ratio_Baking_Site/Accounts"
 	"github.com/gwaDyckuL1/Ratio_Baking_Site/models"
@@ -61,7 +60,7 @@ func LoginSubmitHandler(db *sql.DB) http.HandlerFunc {
 
 			_, err = db.Exec(`
 				INSERT INTO sessions (user_id, session_token)
-				VALUES (?, ?)
+				VALUES (?, ?);
 				`, userId, sessionID)
 			if err != nil {
 				log.Printf("Error in saving session cookie. %v", err)
@@ -69,9 +68,9 @@ func LoginSubmitHandler(db *sql.DB) http.HandlerFunc {
 
 			_, err = db.Exec(`
 				UPDATE users 
-				SET last_login = ?
-				WHERE id = ?
-				`, time.Now(), userId)
+				SET last_login = CURRENT_TIMESTAMP
+				WHERE id = ?;
+				`, userId)
 			if err != nil {
 				log.Printf("Error saving last login for %v. %v", data.Username, err)
 			}
@@ -81,8 +80,8 @@ func LoginSubmitHandler(db *sql.DB) http.HandlerFunc {
 				Value:    sessionID,
 				Path:     "/",
 				HttpOnly: true,
-				Secure:   false, //will need to change to secure
-				SameSite: http.SameSiteStrictMode,
+				Secure:   false,
+				SameSite: http.SameSiteLaxMode,
 			})
 
 		} else {

@@ -2,6 +2,7 @@ package main
 
 import (
 	"html/template"
+	"log"
 	"net/http"
 
 	"github.com/gwaDyckuL1/Ratio_Baking_Site/database"
@@ -18,6 +19,10 @@ func main() {
 	loadCalcPages()
 	database := database.OpenDatabase()
 	defer database.Close()
+	_, err := database.Exec("PRAGMA journal_mode=WAL;")
+	if err != nil {
+		log.Fatal(err)
+	}
 	router := http.NewServeMux()
 
 	fs := http.FileServer(http.Dir("static"))
@@ -28,6 +33,7 @@ func main() {
 	router.Handle("/contact", handlers.SessionMiddleware(database, handlers.ContactHandler(templates)))
 	router.Handle("/login", handlers.SessionMiddleware(database, handlers.LoginHandler(templates)))
 	router.Handle("/loginSubmit", handlers.SessionMiddleware(database, handlers.LoginSubmitHandler(database)))
+	router.Handle("/logout", handlers.SessionMiddleware(database, handlers.LogoutHandler(database)))
 	router.Handle("/register", handlers.SessionMiddleware(database, handlers.RegisterHandler(templates)))
 	router.Handle("/registrationSubmit", handlers.SessionMiddleware(database, handlers.RegistrationSubmitHandler(database)))
 

@@ -41,9 +41,11 @@ type RecipeData struct {
 }
 
 type Session struct {
-	LoggedIn bool
-	Username string
-	Name     string
+	LoggedIn     bool
+	Username     string
+	Name         string
+	UserID       int
+	SessionToken string
 }
 
 type RegistrationData struct {

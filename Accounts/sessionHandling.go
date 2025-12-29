@@ -11,7 +11,7 @@ import (
 )
 
 func ActiveSession(db *sql.DB, r *http.Request) *models.Session {
-	var userID string
+	var userID int
 	var s models.Session
 
 	sessionToken, err := r.Cookie("session-token")
@@ -23,7 +23,7 @@ func ActiveSession(db *sql.DB, r *http.Request) *models.Session {
 	err = db.QueryRow(`
 		SELECT user_id 
 		FROM sessions 
-		WHERE session_token = ?`, sessionToken.Value).Scan(&userID)
+		WHERE session_token = ?;`, sessionToken.Value).Scan(&userID)
 	if err == sql.ErrNoRows {
 		fmt.Println("No session found.")
 		s.LoggedIn = false
@@ -38,7 +38,7 @@ func ActiveSession(db *sql.DB, r *http.Request) *models.Session {
 	err = db.QueryRow(`
 		SELECT name, username
 		FROM users
-		WHERE id = ?
+		WHERE id = ?;
 	`, userID).Scan(&s.Name, &s.Username)
 	if err == sql.ErrNoRows {
 		fmt.Println("User Id not found")
@@ -52,6 +52,8 @@ func ActiveSession(db *sql.DB, r *http.Request) *models.Session {
 	}
 
 	s.LoggedIn = true
+	s.SessionToken = sessionToken.Value
+	s.UserID = userID
 	return &s
 }
 

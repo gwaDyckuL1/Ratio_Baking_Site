@@ -40,7 +40,7 @@ func OpenDatabase() *sql.DB {
 			recipe_data TEXT NOT NULL,
 			create_date DATETIME DEFAULT CURRENT_TIMESTAMP,
 			FOREIGN KEY (user_id) REFERENCES users(id)
-		)`,
+		);`,
 		`CREATE TABLE IF NOT EXISTS sessions (
 			id INTEGER PRIMARY KEY AUTOINCREMENT,
 			user_id INTEGER NOT NULL,
@@ -48,13 +48,13 @@ func OpenDatabase() *sql.DB {
 			created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
 			last_active DATETIME DEFAULT CURRENT_TIMESTAMP,
 			FOREIGN KEY (user_id) REFERENCES users(id)
-		)`,
+		);`,
 	}
 
 	for _, table := range createTableSQL {
 		_, err = db.Exec(table)
 		if err != nil {
-			log.Fatal("Error creating user table:", err)
+			log.Fatal("Error creating table:", err)
 		}
 	}
 	return db
