@@ -1,5 +1,4 @@
 const passwordInput = document.getElementById("password");
-const strengthBar = document.getElementById("strength-bar");
 const strengthText = document.getElementById("strength-text");
 
 passwordInput.addEventListener("input", () => {
@@ -45,24 +44,31 @@ passwordInput.addEventListener("input", () => {
             break
     }
 
-    strengthBar.style.width = width;
-    strengthBar.style.backgroundColor = color;
     strengthText.textContent = strength;
     strengthText.style.color = color;
+    passwordInput.style.borderColor = color;
+    passwordInput.style.boxShadow = `0 0 10px ${color}`;
 })
 
 document.getElementById("registration").addEventListener("submit", async function(e) {
     e.preventDefault();
 
+    const toHide = ["registration-error", "username-error", "email-error", "password-error"];
+    toHide.forEach(id => {
+        hide(id);
+    })
+
     const firstPassword = document.getElementById("password").value;
     const checkPass = document.getElementById("check_password").value;
 
     if (firstPassword !== checkPass) {
-        alert("Passwords do not match.")
+        show("password-error");
+        changeText("password-error", "Passwords do not match");
         return
     }
     if (firstPassword.length < 8 ) {
-        alert("Password should be at least 8 characters long.")
+        show("password-error");
+        changeText("password-error", "Password should be at least 8 characters long.");
         return
     }
 
@@ -76,27 +82,16 @@ document.getElementById("registration").addEventListener("submit", async functio
         body: formData,
     });
 
-    document.getElementById("registration-success").style.display = "none";
-    document.getElementById("username-error").style.display = "none";
-    document.getElementById("email-error").style.display = "none";
-
     const data = await result.json();
 
     if (data.ok) {
-        console.log("Registration successful")
-        document.getElementById("registration-success").innerText = data.message;
-        document.getElementById("registration-success").style.display = "block";
-        document.getElementById("registration").style.display = "none";
+        console.log("Registration successful");
+        show("registration-success");
         setTimeout(() => {
             window.location.href = "/login";
         }, 2000);
     } else {
-        if (data.field) {
-            const errorMessage = document.getElementById(data.field + "-error");
-            errorMessage.innerText = data.message;
-            errorMessage.style.display = "block";
-        } else {
-            alert(data.message);
-        }
+        const errorMessage = data.field + "-error";
+        show(errorMessage);
     }
 })

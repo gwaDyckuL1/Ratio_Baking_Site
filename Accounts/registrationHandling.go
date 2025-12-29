@@ -11,8 +11,8 @@ func CheckEmail(email string, db *sql.DB) (bool, error) {
 		SELECT EXISTS (
 			SELECT 1
 			FROM users
-			WHERE UPPER(email) = UPPER(?);
-		);
+			WHERE UPPER(email) = UPPER(?)
+		)
 	`
 	err := db.QueryRow(query, email).Scan(&exists)
 	if err != nil {
@@ -28,8 +28,8 @@ func CheckUserName(username string, db *sql.DB) (bool, error) {
 		SELECT EXISTS (
 			SELECT 1
 			FROM users
-			WHERE UPPER(username) = UPPER(?);
-		);
+			WHERE UPPER(username) = UPPER(?)
+		)
 	`
 	err := db.QueryRow(query, username).Scan(&exists)
 	if err != nil {

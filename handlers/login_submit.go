@@ -3,7 +3,6 @@ package handlers
 import (
 	"database/sql"
 	"encoding/json"
-	"html/template"
 	"log"
 	"net/http"
 
@@ -25,11 +24,11 @@ func LoginSubmitHandler(db *sql.DB) http.HandlerFunc {
 			return
 		}
 
-		err := r.ParseForm()
+		err := r.ParseMultipartForm(4 << 20)
 		if err != nil {
 			http.Error(w, "Error parsing form.", http.StatusBadRequest)
+			return
 		}
-
 		data := models.Login{
 			Username: r.FormValue("username"),
 			Password: r.FormValue("password"),
@@ -41,7 +40,7 @@ func LoginSubmitHandler(db *sql.DB) http.HandlerFunc {
 				json.NewEncoder(w).Encode(models.Response{
 					Ok:      false,
 					Field:   "login-error",
-					Message: "The username or passwrod is incorrect.",
+					Message: "The username or password is incorrect.",
 				})
 			} else {
 				json.NewEncoder(w).Encode(models.Response{
@@ -92,11 +91,14 @@ func LoginSubmitHandler(db *sql.DB) http.HandlerFunc {
 			})
 			return
 		}
-		tmpl := template.Must(template.ParseFiles(
-			"templates/layout.html",
-			"templates/index.html",
-		))
-		sessionInfo.LoggedIn = true
-		tmpl.Execute(w, models.WebData{Session: sessionInfo})
+
+		json.NewEncoder(w).Encode(models.Response{Ok: true})
+
+		// tmpl := template.Must(template.ParseFiles(
+		// 	"templates/layout.html",
+		// 	"templates/index.html",
+		// ))
+		// sessionInfo.LoggedIn = true
+		// tmpl.Execute(w, models.WebData{Session: sessionInfo})
 	}
 }

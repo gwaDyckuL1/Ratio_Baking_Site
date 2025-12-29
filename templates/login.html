@@ -16,24 +16,22 @@
             <form class="login" id="login" method="post" action="/loginSubmit">
                 <div class="form-element">
                     <label for="username">Username</label>
-                    <input type="text", id="username" name="username">
+                    <input type="text", id="username" name="username" autocomplete="username">
                 </div>
                 <div class="form-element">
                     <label for="password">Password</label>
-                    <input type="password" id="password" name="password">
+                    <input type="password" id="password" name="password" autocomplete="current-password">
                 </div>
                 <div class="button">
                     <button type="submit">Submit</button>
                 </div>
-                <div class="warning" id="login-error" style="display: none;">
-                    {{ if eq .Response.Field "login-error" }}
-                        <p class="warning">{{ .Response.Message }}</p>
-                    {{ else }}
-                        <p>Login Successful</p>
-                    {{ end }}
+                <div class="warning hidden" id="login-error">
+                    <p class="warning">Username or password is incorrect.</p>
                 </div>
             </form>
         </div>
-    {{end}}
+        <script src="/static/js/utils.js"></script>
+        <script src="/static/js/login.js"></script>
+        {{end}}
 </body>
 </html>

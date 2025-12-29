@@ -16,6 +16,7 @@ func RegistrationSubmitHandler(db *sql.DB) http.HandlerFunc {
 		sessionInfo := r.Context().Value("session").(*models.Session)
 		if r.Method != http.MethodPost || sessionInfo.LoggedIn {
 			http.Redirect(w, r, "/", http.StatusSeeOther)
+			return
 		}
 
 		err := r.ParseMultipartForm(4 << 20)
@@ -39,9 +40,8 @@ func RegistrationSubmitHandler(db *sql.DB) http.HandlerFunc {
 		}
 		if emailUsed {
 			json.NewEncoder(w).Encode(models.Response{
-				Ok:      false,
-				Field:   "email",
-				Message: "This email already has an account.",
+				Ok:    false,
+				Field: "email",
 			})
 			return
 		}
@@ -54,9 +54,8 @@ func RegistrationSubmitHandler(db *sql.DB) http.HandlerFunc {
 		}
 		if usernameUsed {
 			json.NewEncoder(w).Encode(models.Response{
-				Ok:      false,
-				Field:   "username",
-				Message: "Username not available. Please choose another.",
+				Ok:    false,
+				Field: "username",
 			})
 			return
 		}
@@ -76,11 +75,14 @@ func RegistrationSubmitHandler(db *sql.DB) http.HandlerFunc {
 		if err != nil {
 			log.Printf("Error inserting new user in database. Error: %v", err)
 			w.WriteHeader(http.StatusInternalServerError)
-			json.NewEncoder(w).Encode(models.Response{Ok: false, Message: "Server error. Try again later."})
+			json.NewEncoder(w).Encode(models.Response{
+				Ok:    false,
+				Field: "registration",
+			})
 			return
 		}
 
-		json.NewEncoder(w).Encode(models.Response{Ok: true, Message: "Registration Successful"})
+		json.NewEncoder(w).Encode(models.Response{Ok: true})
 
 	}
 }

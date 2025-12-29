@@ -56,6 +56,13 @@ func CalcResultsHandler() http.HandlerFunc {
 			RecipeData: &data,
 		}
 
+		if len(problems) > 0 {
+			for _, value := range problems {
+				log.Println(value)
+			}
+
+		}
+
 		tmpl := template.Must(template.ParseFiles(
 			"templates/layout.html",
 			"templates/calculator/layout.html",

@@ -131,19 +131,3 @@ function resetOptions() {
     tangzhongChoice.value = "No";
     tangzhongChoiceChange();
 }
-
-function makeRequired(id) {
-    document.getElementById(id).setAttribute("required", "true");
-}
-
-function hide(id) {
-    document.getElementById(id).classList.add("hidden");
-}
-
-function show(id) {
-    document.getElementById(id).classList.remove("hidden")
-}
-
-function zeroField(id) {
-    document.getElementById(id).value = "";
-}

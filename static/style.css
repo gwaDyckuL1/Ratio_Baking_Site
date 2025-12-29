@@ -41,8 +41,14 @@ body {
     width: 100%;
 }
 
+.success {
+    color: green;
+    font-weight: bold;
+}
+
 .warning {
     color: red;
+    display: flex;
     font-weight: bold;
 }
 
