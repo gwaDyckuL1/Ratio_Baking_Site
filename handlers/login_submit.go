@@ -96,6 +96,7 @@ func LoginSubmitHandler(db *sql.DB) http.HandlerFunc {
 			"templates/layout.html",
 			"templates/index.html",
 		))
+		sessionInfo.LoggedIn = true
 		tmpl.Execute(w, models.WebData{Session: sessionInfo})
 	}
 }

@@ -12,12 +12,12 @@
         <a href="/">Home</a>
         <a href="/about">About</a>
         <a href="/contact">Contact</a>
-        <a href="/register">Register</a>
         <a href="/calculator/">Calculator</a>
         <div>
             {{ if .Session.LoggedIn }}
                 <a href="/logout">Log Out</a>
             {{ else }}
+                <a href="/register">Register</a>
                 <a href="/login">Login</a>
             {{ end }}
         </div>
