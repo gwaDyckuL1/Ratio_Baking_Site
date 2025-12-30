@@ -41,14 +41,6 @@ type RecipeData struct {
 	Notes               string
 }
 
-type Session struct {
-	LoggedIn     bool
-	Username     string
-	Name         string
-	UserID       int
-	SessionToken string
-}
-
 type RegistrationData struct {
 	Username string
 	Name     string
@@ -60,6 +52,14 @@ type Response struct {
 	Ok      bool   `json:"ok"`
 	Field   string `json:"field,omitempty"`
 	Message string `json:"message,omitempty"`
+}
+
+type Session struct {
+	LoggedIn     bool
+	Username     string
+	Name         string
+	UserID       int
+	SessionToken string
 }
 
 type WebData struct {
