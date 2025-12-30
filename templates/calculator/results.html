@@ -2,44 +2,68 @@
 
 {{ define "calcContent" }}
 
-<h1>Results</h1>
-<div>
-    <p>Here are your results for the {{ .RecipeData.Calculator }} by {{ .RecipeData.SubCalculator }}</p>
-    <ul>
-        <li>Flour: {{ .RecipeData.FlourOut }} grams</li>
-        <li>Hydration {{ .RecipeData.HydrationOut }} grams</li>
-        <li>Salt: {{ .RecipeData.SaltOut }} grams</li>
-        
-        {{ if eq .RecipeData.Leavener "Sourdough" }}
-            <li>  Sourdough: {{.RecipeData.LeavenerOut}} grams</li>
+    <h1>Results</h1>
+    <div>
+        <p>Here are your results for the {{ .RecipeData.Calculator }} by {{ .RecipeData.SubCalculator }}</p>
+        <ul>
+            <li>Flour: {{ .RecipeData.FlourOut }} grams</li>
+            <li>Hydration {{ .RecipeData.HydrationOut }} grams</li>
+            <li>Salt: {{ .RecipeData.SaltOut }} grams</li>
+            
+            {{ if eq .RecipeData.Leavener "Sourdough" }}
+                <li>  Sourdough: {{.RecipeData.LeavenerOut}} grams</li>
+            {{ end }}
+            {{ if eq .RecipeData.Leavener "Yeast" }}
+                <li>Yeast: {{ .RecipeData.LeavenerOut }} grams</li>
+            {{ end }}
+            
+            {{ if .RecipeData.EggIn }}
+                <li>
+                    Egg: {{ .RecipeData.EggGrams }} grams or {{ .RecipeData.EggWhole }} eggs
+                </li>
+            {{ end }}
+            {{ if .RecipeData.FatIn }}
+                <li>
+                    Fat: {{ .RecipeData.FatOut }} grams
+                </li>
+            {{ end }}
+            {{ if .RecipeData.SugarIn }}
+                <li>
+                    Sugar: {{ .RecipeData.SugarOut }} grams
+                </li>
+            {{ end }}
+        </ul>
+        {{ if .RecipeData.TangzhongPercentage }}
+        <h3>Tangzhong Amounts</h3>
+        <ul>
+            <li>Flour: {{ .RecipeData.TangzhongFlour }}</li>
+            <li>Hydration: {{ .RecipeData.TangzhongHydration }}</li>
+        </ul>
         {{ end }}
-        {{ if eq .RecipeData.Leavener "Yeast" }}
-            <li>Yeast: {{ .RecipeData.LeavenerOut }} grams</li>
-        {{ end }}
-        
-        {{ if .RecipeData.EggIn }}
-            <li>
-                Egg: {{ .RecipeData.EggGrams }} grams or {{ .RecipeData.EggWhole }} eggs
-            </li>
-        {{ end }}
-        {{ if .RecipeData.FatIn }}
-            <li>
-                Fat: {{ .RecipeData.FatOut }} grams
-            </li>
-        {{ end }}
-        {{ if .RecipeData.SugarIn }}
-            <li>
-                Sugar: {{ .RecipeData.SugarOut }} grams
-            </li>
-        {{ end }}
-    </ul>
-    {{ if .RecipeData.TangzhongPercentage }}
-    <h3>Tangzhong Amounts</h3>
-    <ul>
-        <li>Flour: {{ .RecipeData.TangzhongFlour }}</li>
-        <li>Hydration: {{ .RecipeData.TangzhongHydration }}</li>
-    </ul>
+    </div>
+    {{ if .Session.LoggedIn }}
+        <h2>Should this recipe be saved?</h2>
+        <form action="/saveRecipe" method="post" id="saveRecipe">
+            <input type="hidden" name="recipeJSON" value="{{.RecipeJSON}}">
+            <div class="form-element">
+                <label for="recipeName">Recipe Name: </label>
+                <input type="text" id="recipeName" name="recipeName" required>
+            </div>
+            <div class="form-element">
+                <label for="notes">Notes: </label>
+                <textarea name="notes" id="notes" rows="10" cols="50"></textarea>
+            </div>
+            <div class="form-element">
+                <button type="submit">Submit</button>
+            </div>
+        </form>
+        <div id="save-error" class="hidden ">
+            <p class="warning">There was an internal error in trying to save the recipe. Please try again later.</p>
+        </div>
+        <div id="success", class="hidden">
+            <p class="success">Recipe Saved!</p>
+        </div>
     {{ end }}
-</div>
-
+    <script src="/static/js/utils.js"></script>
+    <script src="/static/js/saveRecipe.js"></script>
 {{ end }}

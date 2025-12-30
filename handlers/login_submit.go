@@ -94,11 +94,5 @@ func LoginSubmitHandler(db *sql.DB) http.HandlerFunc {
 
 		json.NewEncoder(w).Encode(models.Response{Ok: true})
 
-		// tmpl := template.Must(template.ParseFiles(
-		// 	"templates/layout.html",
-		// 	"templates/index.html",
-		// ))
-		// sessionInfo.LoggedIn = true
-		// tmpl.Execute(w, models.WebData{Session: sessionInfo})
 	}
 }

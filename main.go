@@ -37,6 +37,8 @@ func main() {
 	router.Handle("/register", handlers.SessionMiddleware(database, handlers.RegisterHandler(templates)))
 	router.Handle("/registrationSubmit", handlers.SessionMiddleware(database, handlers.RegistrationSubmitHandler(database)))
 
+	router.Handle("/saveRecipe", handlers.SessionMiddleware(database, handlers.SaveRecipeHandler(database)))
+
 	router.Handle("/calculator/", handlers.SessionMiddleware(database, handlers.CalculatorIndexHandler(templates)))
 	router.Handle("/calculator/bread", handlers.SessionMiddleware(database, handlers.CalculatorBreadHandler(templates)))
 	router.Handle("/calculator/results", handlers.SessionMiddleware(database, handlers.CalcResultsHandler()))

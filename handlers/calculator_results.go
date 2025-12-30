@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"encoding/json"
 	"html/template"
 	"log"
 	"net/http"
@@ -51,9 +52,15 @@ func CalcResultsHandler() http.HandlerFunc {
 
 		calculator.Calculator(&data, problems)
 
+		recipeJSON, err := json.Marshal(data)
+		if err != nil {
+			log.Println("Problem marshaling recipe to JSON: ", err)
+		}
+
 		webData := models.WebData{
 			Session:    sessionInfo,
 			RecipeData: &data,
+			RecipeJSON: string(recipeJSON),
 		}
 
 		if len(problems) > 0 {

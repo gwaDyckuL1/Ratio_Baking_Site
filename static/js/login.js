@@ -12,7 +12,6 @@ document.getElementById("login").addEventListener("submit", async function(e) {
         body: formData
     });
     const data = await result.json();
-    console.log(data);
     if (data.ok) {
         window.location.href = "/";
     } else {

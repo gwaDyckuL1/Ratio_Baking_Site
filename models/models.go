@@ -38,6 +38,7 @@ type RecipeData struct {
 	LeavenerOut         string
 	SourdoughIn         string
 	YeastIn             string
+	Notes               string
 }
 
 type Session struct {
@@ -63,6 +64,6 @@ type Response struct {
 
 type WebData struct {
 	RecipeData *RecipeData
-	Response   Response
 	Session    *Session
+	RecipeJSON string
 }

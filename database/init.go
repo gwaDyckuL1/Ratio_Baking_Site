@@ -37,7 +37,10 @@ func OpenDatabase() *sql.DB {
 			id INTEGER PRIMARY KEY AUTOINCREMENT,
 			user_id INTEGER NOT NULL,
 			recipe_name TEXT NOT NULL,
+			category TEXT NOT NULL,
+			subcategory TEXT NOT NULL,
 			recipe_data TEXT NOT NULL,
+			notes TEXT,
 			create_date DATETIME DEFAULT CURRENT_TIMESTAMP,
 			FOREIGN KEY (user_id) REFERENCES users(id)
 		);`,
