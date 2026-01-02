@@ -1,5 +1,7 @@
 package models
 
+type CleanupFunc func() error
+
 type FormErrors map[string]string
 
 type Login struct {
