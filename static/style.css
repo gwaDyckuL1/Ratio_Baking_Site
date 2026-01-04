@@ -2,6 +2,26 @@ body {
     width: 600px;
     background-color: burlywood;
     margin: 0 auto;
+    border: 1px black;
+}
+
+.calc-layout {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+    width: 100%; 
+}
+
+.calc-layout > div:first-child {
+    width: 50%;
+}
+
+.calc-layout > div:nth-child(2) {
+    width: 50%;
+}
+
+.calc-layout h2 {
+    margin-top: 0;
 }
 
 .form-element {
