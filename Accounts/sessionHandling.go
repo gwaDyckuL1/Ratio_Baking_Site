@@ -25,7 +25,6 @@ func ActiveSession(db *sql.DB, r *http.Request) *models.Session {
 		FROM sessions 
 		WHERE session_token = ?;`, sessionToken.Value).Scan(&userID)
 	if err == sql.ErrNoRows {
-		fmt.Println("No session found.")
 		s.LoggedIn = false
 		return &s
 	}

@@ -57,11 +57,15 @@ document.getElementById("calc-form").addEventListener("focusin", (e) => {
         case "fat":
         case "sugar":
         case "egg":
-            insertHtml = bakersPercentage;
+            let flour = document.getElementById("flour").value;
+            let wholeEgg = 56 / flour * 100;
+            insertHtml = bakersPercentage + `
+                    <b>Note:</b> The average large egg weighs 56 grams. To use one large egg this percenate would need to be ${Math.ceil(wholeEgg)}.
+                `;
             break;
         case "salt":
             insertHtml = bakersPercentage + `
-                <p><b>Note:</b> This will default to 2% if left blank.</p> 
+                 <p><b>Note:</b> I generally do 2%.</p> 
             `;
             break;
         case "leavener-choice":
@@ -71,12 +75,13 @@ document.getElementById("calc-form").addEventListener("focusin", (e) => {
             break;
         case "sourdough":
             insertHtml = bakersPercentage + `
-                <p><b>Note:</b>This will default to 20% if left blank.</p> 
+                <p>How much sourdough starter are you using. The general recommendations I have seen are from 10 to 30 percent.  I generally go with the happy medium
+                of 20%</p>
             `; 
             break;
         case "yeast":
             insertHtml = bakersPercentage + `
-                <p><b>Note</b>This will default to 1% if left blank.</p> 
+                <p>How much yeast do you want to use? General recommendations is about 1%.</p>
             `;
             break;
         case "tangzhong-choice":

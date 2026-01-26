@@ -54,9 +54,9 @@ func TestLeavener(t *testing.T) {
 		expected       string
 	}{
 		{"Sourdough Value", "Sourdough", "100", "10", "10"},
-		{"Sourdough No Value", "Sourdough", "100", "", "20"},
+		{"Sourdough No Value", "Sourdough", "100", "", "0"},
 		{"Yeast Value", "Yeast", "100", "10", "10"},
-		{"Yeast No Value", "Yeast", "100", "", "1"},
+		{"Yeast No Value", "Yeast", "100", "", "0"},
 	}
 
 	for _, tt := range tests {
@@ -147,7 +147,7 @@ func TestPanDimensions(t *testing.T) {
 	}{
 		{"Square Centimeters", "square", "centimeters", "10", "10", "10", "10", "500"},
 		{"Square Inches", "square", "inches", "10", "10", "10", "10", "8194"},
-		{"Circle", "circle", "centimeters", "2", "", "", "100", "7854"},
+		{"Circle", "circle", "centimeters", "", "", "2", "100", "7854"},
 	}
 
 	problems := models.FormErrors{}
