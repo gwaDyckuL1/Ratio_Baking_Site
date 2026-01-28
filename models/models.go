@@ -18,6 +18,7 @@ type RecipeData struct {
 	Width               string
 	Depth               string
 	Diameter            string
+	Volumn              string
 	FlourIn             string
 	FlourOut            string
 	DoughWeight         string

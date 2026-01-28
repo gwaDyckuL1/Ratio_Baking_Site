@@ -27,8 +27,7 @@ document.getElementById("calc-form").addEventListener("focusin", (e) => {
             break;
         case "shape":
             insertHtml = `
-                <p>Does the container have 4 sides or is it more cylinder?</p>
-                <p>Crazier shapes not implemented yet!</p> 
+                <p>What shape is the pan you are using most like?</p>
             `;
             break;
         case "height":
@@ -42,6 +41,11 @@ document.getElementById("calc-form").addEventListener("focusin", (e) => {
             insertHtml = `
                 <p>Measurement across the entire circle.</p> 
             `;
+            break;
+        case "volumn":
+            insertHtml = `
+                <p>To determine this put the container on a scale measuring in grams and fill it with water. Record the number here. </p>
+            `
             break;
         case "flour":
             insertHtml = `

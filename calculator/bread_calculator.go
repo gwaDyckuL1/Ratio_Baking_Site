@@ -8,7 +8,12 @@ import (
 
 func breadCalculator(data *models.RecipeData, problems models.FormErrors) {
 	if data.SubCalculator == "pan-dimension" {
-		area := getArea(data, problems)
+		var area float64
+		if data.Shape == "weird" {
+			area = stringToFloat("volumn", data.Volumn, problems)
+		} else {
+			area = getArea(data, problems)
+		}
 		totalWeight := getTotalWeight(area, data, problems)
 		data.DoughWeight = strconv.Itoa(totalWeight)
 	}

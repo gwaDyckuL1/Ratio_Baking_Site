@@ -63,15 +63,22 @@ function leavenerChoiceChange() {
 function panShapeChange() {
     hide("square");
     hide("round");
+    hide("weird");
     switch (panShape.value) {
         case "square":
             show("square");
             show("depth-view");
+            show("measure");
             break;
         case "round":
             show("round");
             show("depth-view");
+            show("measure");
             break;
+        case "weird":
+            show("weird");
+            hide("measure");
+            hide("depth-view");
     }
 }
 

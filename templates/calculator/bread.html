@@ -1,156 +1,171 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ define "title" }}Bread Calculator{{ end }}</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ define "title" }}Bread Calculator{{ end }}</title>
 </head>
+
 <body>
-    
-    {{define "calcContent" }}
 
-    <h1>Test..This is Bread Calculator!</h1>
+  {{define "calcContent" }}
 
-    <div class="calc-layout">
-        <div class="inputs">
-            <form action="/calculator/results" method="post" id="calc-form">
-                <select name="calculator-bread" id="calculator-bread" title="calculator-bread">
-                    <option value="">Choose an option</option>
-                    <option value="flour-weight">Flour Weight</option>
-                    <option value="total-weight">Total Weight</option>
-                    <option value="pan-dimension">Pan Diminsions</option>
-                </select>
+  <h1>Test..This is Bread Calculator!</h1>
 
-                <input type="hidden" name="calculatorFor" value="bread">
-                <div id="flour-weight" class="bread-options hidden">
-                    <h3>Calculating Based On Flour Weight</h3>
-                </div>
+  <div class="calc-layout">
+    <div class="inputs">
+      <form action="/calculator/results" method="post" id="calc-form">
+        <select name="calculator-bread" id="calculator-bread" title="calculator-bread">
+          <option value="">Choose an option</option>
+          <option value="flour-weight">Flour Weight</option>
+          <option value="total-weight">Total Weight</option>
+          <option value="pan-dimension">Pan Diminsions</option>
+        </select>
 
-                <div id="total-weight" class="bread-options hidden">
-                    <h3>Calculating Based on Final Dough Weight</h3>
-                </div>
-
-                <div id="pan-dimension" class="bread-options hidden">
-                    <h3>Calculating Based on Pan Diminsions</h3>
-                    <div class="form-element">
-                        <label for="measurement">Measurement</label>
-                        <select name="measurement" id="measurement">
-                            <option value="inches">Inches</option>
-                            <option value="centimeters">Centimeters</option>
-                        </select>
-                    </div>
-                    <div class="form-element">
-                        <label for="shape">Pan Shape</label>
-                        <select name="shape" id="shape">
-                            <option value="">Select a Shape</option>
-                            <option value="square">Square..ish</option>
-                            <option value="round">Round</option>
-                        </select>
-                    </div>
-                    <div class="hidden" id="square">
-                        <div class="form-element">
-                            <label for="height">Height</label>
-                            <input type="number" id="height" name="height">
-                        </div>
-                        <div class="form-element">
-                            <label for="width">Width</label>
-                            <input type="number" id="width" name="width">
-                        </div>
-                    </div>
-                    <div class="hidden" id="round">
-                        <div class="form-element">
-                            <label for="diameter">Diameter</label>
-                            <input type="number" id="diameter" name="diameter">
-                        </div>
-                    </div>
-                    <div class="form-element hidden" id="depth-view">
-                        <label for="depth">Depth</label>
-                        <input type="number" id="depth" name="depth">
-                    </div>
-                </div>
-
-                <div class="form-element hidden bread-options" id="flour-view">
-                    <label for="flour">Flour Weight</label>
-                    <input type="number" id="flour" name="flour">
-                </div>
-                <div class="form-element hidden bread-options" id="dough-weight-view">
-                    <label for="dough-weight">Final Dough Weight</label>
-                    <input type="number" id="dough-weight" name="dough-weight">
-                </div>
-                <div class="allRecipe form-element hidden" id="hydration-view">
-                    <label for="hydration">Hydration Percentage</label>
-                    <input type="number" id="hydration" name="hydration">
-                </div>
-                <div class="allRecipe form-element hidden" id="fat-view">
-                    <label for="fat">Fat Percentage</label>
-                    <input type="number" id="fat" name="fat">
-                </div>
-                <div class="allRecipe form-element hidden" id="sugar-view">
-                    <label for="sugar">Sugar Percentage</label>
-                    <input type="number" id="sugar" name="sugar">
-                </div>
-                <div class="allRecipe form-element hidden" id="salt-view">
-                    <label for="salt">Salt Percentage</label>
-                    <input type="number" id="salt" name="salt">
-                </div>
-                <div class="allRecipe form-element hidden" id="egg-view">
-                    <label for="egg">Egg Percentage</label>
-                    <input type="number" id="egg" name="egg">
-                </div>
-
-                <div id="leavener-view" class="bread-options allRecipe hidden">
-                    <div class="form-element">
-                        <label for="leavener-choice">Leavener</label>
-                        <select name="leavener-choice" id="leavener-choice" required>
-                            <option value="">Choose Leavener</option>
-                            <option value="Sourdough">Sourdough</option> 
-                            <option value="Yeast">Yeast</option>
-                        </select>
-                    </div>
-                    <div class="form-element hidden" id="sourdough-view">
-                        <label for="sourdough">Sourdough %</label>
-                        <input type="number" id="sourdough" name="sourdough">
-                    </div>
-                    <div class="form-element hidden" id="yeast-view">
-                        <label for="yeast">Yeast %</label>
-                        <input type="number" id="yeast" name="yeast">
-                    </div>
-                </div>
-
-                <div id="tangzhong-view" class="bread-options allRecipe hidden">
-                    <div class="form-element">
-                        <label for="tangzhong-choice">Tangzhong?</label>
-                        <select name="tangzhong-choice" id="tangzhong-choice">
-                            <option value="No">No</option> 
-                            <option value="Yes">Yes</option>
-                        </select>
-                    </div>
-                    <div id="tangzhong-select" class="bread-options hidden">
-                        <div class="form-element">
-                            <label for="tangzhong-percentage">Tangzhong Percentage</label>
-                            <input type="number" id="tangzhong-percentage" name="tangzhong-percentage">
-                        </div>
-                        <div class="form-element">
-                            <label for="tangzhong-ratio">Hydration Multiplier</label>
-                            <input type="number" id="tangzhong-ratio" name="tangzhong-ratio">
-                        </div>
-                        <div class="form-element warning">
-                            <p id="all-tangzhong" class="hidden">All desired hydration will be used in Tangzhong!</p>
-                            <p id="hydration-needed" class="hidden">Check hydration and tangzhong numbers. Desired hydration is to low for tanzhong ratio.</p>
-                        </div>
-                    </div>
-                </div>
-                <input id="bread-submission" type="submit" value="Submit" class="hidden">
-            </form>
+        <input type="hidden" name="calculatorFor" value="bread">
+        <div id="flour-weight" class="bread-options hidden">
+          <h3>Calculating Based On Flour Weight</h3>
         </div>
-        <div>
-            <h2>Instructions:</h2>
-            <div class="info" id="info-box"> </div>
+
+        <div id="total-weight" class="bread-options hidden">
+          <h3>Calculating Based on Final Dough Weight</h3>
         </div>
+
+        <div id="pan-dimension" class="bread-options hidden">
+          <h3>Calculating Based on Pan Diminsions</h3>
+          <div id="measure">
+            <div class="form-element">
+              <label for="measurement">Measurement</label>
+              <select name="measurement" id="measurement">
+                <option value="inches">Inches</option>
+                <option value="centimeters">Centimeters</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-element">
+            <label for="shape">Pan Shape</label>
+            <select name="shape" id="shape">
+              <option value="">Select a Shape</option>
+              <option value="square">Square..ish</option>
+              <option value="round">Round</option>
+              <option value="weird">Weird</option>
+            </select>
+          </div>
+          <div class="hidden" id="square">
+            <div class="form-element">
+              <label for="height">Height</label>
+              <input type="number" id="height" name="height">
+            </div>
+            <div class="form-element">
+              <label for="width">Width</label>
+              <input type="number" id="width" name="width">
+            </div>
+          </div>
+          <div class="hidden" id="round">
+            <div class="form-element">
+              <label for="diameter">Diameter</label>
+              <input type="number" id="diameter" name="diameter">
+            </div>
+          </div>
+          <div id="depth-view" class="hidden">
+            <div class="form-element ">
+              <label for="depth">Depth</label>
+              <input type="number" id="depth" name="depth">
+            </div>
+          </div>
+          <div class="hidden" id="weird">
+            <div class="form-element">
+              <label for="volumn">Volumn</label>
+              <input type="number" id="volumn" name="volumn">
+            </div>
+          </div>
+        </div>
+
+        <div class="form-element hidden bread-options" id="flour-view">
+          <label for="flour">Flour Weight</label>
+          <input type="number" id="flour" name="flour">
+        </div>
+        <div class="form-element hidden bread-options" id="dough-weight-view">
+          <label for="dough-weight">Final Dough Weight</label>
+          <input type="number" id="dough-weight" name="dough-weight">
+        </div>
+        <div class="allRecipe form-element hidden" id="hydration-view">
+          <label for="hydration">Hydration Percentage</label>
+          <input type="number" id="hydration" name="hydration">
+        </div>
+        <div class="allRecipe form-element hidden" id="fat-view">
+          <label for="fat">Fat Percentage</label>
+          <input type="number" id="fat" name="fat">
+        </div>
+        <div class="allRecipe form-element hidden" id="sugar-view">
+          <label for="sugar">Sugar Percentage</label>
+          <input type="number" id="sugar" name="sugar">
+        </div>
+        <div class="allRecipe form-element hidden" id="salt-view">
+          <label for="salt">Salt Percentage</label>
+          <input type="number" id="salt" name="salt">
+        </div>
+        <div class="allRecipe form-element hidden" id="egg-view">
+          <label for="egg">Egg Percentage</label>
+          <input type="number" id="egg" name="egg">
+        </div>
+
+        <div id="leavener-view" class="bread-options allRecipe hidden">
+          <div class="form-element">
+            <label for="leavener-choice">Leavener</label>
+            <select name="leavener-choice" id="leavener-choice" required>
+              <option value="">Choose Leavener</option>
+              <option value="Sourdough">Sourdough</option>
+              <option value="Yeast">Yeast</option>
+            </select>
+          </div>
+          <div class="form-element hidden" id="sourdough-view">
+            <label for="sourdough">Sourdough %</label>
+            <input type="number" id="sourdough" name="sourdough">
+          </div>
+          <div class="form-element hidden" id="yeast-view">
+            <label for="yeast">Yeast %</label>
+            <input type="number" id="yeast" name="yeast">
+          </div>
+        </div>
+
+        <div id="tangzhong-view" class="bread-options allRecipe hidden">
+          <div class="form-element">
+            <label for="tangzhong-choice">Tangzhong?</label>
+            <select name="tangzhong-choice" id="tangzhong-choice">
+              <option value="No">No</option>
+              <option value="Yes">Yes</option>
+            </select>
+          </div>
+          <div id="tangzhong-select" class="bread-options hidden">
+            <div class="form-element">
+              <label for="tangzhong-percentage">Tangzhong Percentage</label>
+              <input type="number" id="tangzhong-percentage" name="tangzhong-percentage">
+            </div>
+            <div class="form-element">
+              <label for="tangzhong-ratio">Hydration Multiplier</label>
+              <input type="number" id="tangzhong-ratio" name="tangzhong-ratio">
+            </div>
+            <div class="form-element warning">
+              <p id="all-tangzhong" class="hidden">All desired hydration will be used in Tangzhong!</p>
+              <p id="hydration-needed" class="hidden">Check hydration and tangzhong numbers. Desired hydration is to low
+                for tanzhong ratio.</p>
+            </div>
+          </div>
+        </div>
+        <input id="bread-submission" type="submit" value="Submit" class="hidden">
+      </form>
     </div>
-        <script src="/static/js/utils.js"></script>
-        <script src="/static/js/calc_info.js"></script>
-        <script src="/static/js/bread.js"></script>   
-    {{ end }}  
+    <div>
+      <h2>Instructions:</h2>
+      <div class="info" id="info-box"> </div>
+    </div>
+  </div>
+  <script src="/static/js/utils.js"></script>
+  <script src="/static/js/calc_info.js"></script>
+  <script src="/static/js/bread.js"></script>
+  {{ end }}
 </body>
+
 </html>

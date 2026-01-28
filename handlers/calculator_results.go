@@ -34,6 +34,7 @@ func CalcResultsHandler() http.HandlerFunc {
 			Width:               r.FormValue("width"),
 			Depth:               r.FormValue("depth"),
 			Diameter:            r.FormValue("diameter"),
+			Volumn:              r.FormValue("volumn"),
 			FlourIn:             r.FormValue("flour"),
 			DoughWeight:         r.FormValue("dough-weight"),
 			HydrationIn:         r.FormValue("hydration"),
