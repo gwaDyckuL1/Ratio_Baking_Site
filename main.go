@@ -15,7 +15,7 @@ import (
 	_ "github.com/mattn/go-sqlite3"
 )
 
-var pages = []string{"index", "about", "contact", "register", "login"}
+var pages = []string{"index", "about", "contact", "register", "login", "forgotLogin"}
 var calcPages = []string{"calcIndex", "bread"}
 var templates = map[string]*template.Template{}
 
@@ -46,6 +46,8 @@ func main() {
 	router.Handle("/", handlers.SessionMiddleware(db, handlers.IndexHandler(templates)))
 	router.Handle("/about", handlers.SessionMiddleware(db, handlers.AboutHandler(templates)))
 	router.Handle("/contact", handlers.SessionMiddleware(db, handlers.ContactHandler(templates)))
+	router.Handle("/forgotLogin", handlers.SessionMiddleware(db, handlers.ForgotLoginHandler(templates)))
+	router.Handle("/forgotLoginSubmit", handlers.ForgotLoginSubmitHandler(db))
 	router.Handle("/login", handlers.SessionMiddleware(db, handlers.LoginHandler(templates)))
 	router.Handle("/loginSubmit", handlers.SessionMiddleware(db, handlers.LoginSubmitHandler(db)))
 	router.Handle("/logout", handlers.SessionMiddleware(db, handlers.LogoutHandler(db)))

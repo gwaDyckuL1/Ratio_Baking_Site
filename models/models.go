@@ -5,7 +5,7 @@ type CleanupFunc func() error
 type FormErrors map[string]string
 
 type Login struct {
-	Username string
+	Email    string
 	Password string
 }
 
@@ -59,9 +59,10 @@ type Response struct {
 
 type Session struct {
 	LoggedIn     bool
-	Username     string
+	Email        string
 	Name         string
 	UserID       int
+	Username     string
 	SessionToken string
 }
 

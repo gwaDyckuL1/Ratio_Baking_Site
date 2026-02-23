@@ -11,10 +11,10 @@ func CheckPassword(input, saved string) bool {
 	return err == nil
 }
 
-func GetPassword(username string, db *sql.DB) (int, string, error) {
+func GetPassword(email string, db *sql.DB) (int, string, error) {
 	var hash string
 	var id int
-	err := db.QueryRow("select id, password from users where username = ?;", username).Scan(&id, &hash)
+	err := db.QueryRow("select id, password from users where email = ?;", email).Scan(&id, &hash)
 	return id, hash, err
 }
 

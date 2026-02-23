@@ -30,17 +30,17 @@ func LoginSubmitHandler(db *sql.DB) http.HandlerFunc {
 			return
 		}
 		data := models.Login{
-			Username: r.FormValue("username"),
+			Email:    r.FormValue("email"),
 			Password: r.FormValue("password"),
 		}
 
-		userId, savedPassword, err := accounts.GetPassword(data.Username, db)
+		userId, savedPassword, err := accounts.GetPassword(data.Email, db)
 		if err != nil {
 			if err == sql.ErrNoRows {
 				json.NewEncoder(w).Encode(models.Response{
 					Ok:      false,
 					Field:   "login-error",
-					Message: "The username or password is incorrect.",
+					Message: "The email password is incorrect.",
 				})
 			} else {
 				json.NewEncoder(w).Encode(models.Response{
@@ -48,7 +48,7 @@ func LoginSubmitHandler(db *sql.DB) http.HandlerFunc {
 					Field:   "login-error",
 					Message: "Internal failure. Please try again later",
 				})
-				log.Println("Login DB error for username: ", data.Username, err)
+				log.Println("Login DB error for email : ", data.Email, err)
 			}
 			return
 		}
@@ -71,7 +71,7 @@ func LoginSubmitHandler(db *sql.DB) http.HandlerFunc {
 				WHERE id = ?;
 				`, userId)
 			if err != nil {
-				log.Printf("Error saving last login for %v. %v", data.Username, err)
+				log.Printf("Error saving last login for %v. %v", data.Email, err)
 			}
 
 			http.SetCookie(w, &http.Cookie{
@@ -87,7 +87,7 @@ func LoginSubmitHandler(db *sql.DB) http.HandlerFunc {
 			json.NewEncoder(w).Encode(models.Response{
 				Ok:      false,
 				Field:   "login-error",
-				Message: "The username or password is incorrect.",
+				Message: "The emailor password is incorrect.",
 			})
 			return
 		}

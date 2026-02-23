@@ -52,6 +52,12 @@ func OpenDatabase() *sql.DB {
 			last_active DATETIME DEFAULT CURRENT_TIMESTAMP,
 			FOREIGN KEY (user_id) REFERENCES users(id)
 		);`,
+		`CREATE TABLE IF NOT EXISTS forgotToken (
+				id INTEGER PRIMARY KEY AUTOINCREMENT,
+				token TEXT NOT NULL,
+				created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+				email TEXT NOT NULL UNIQUE
+			);`,
 	}
 
 	for _, table := range createTableSQL {

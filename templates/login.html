@@ -1,37 +1,48 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{define "title"}}Login{{end}}</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{define "title"}}Login{{end}}</title>
 </head>
+
 <body>
-    {{define "content"}}
-        {{ if .Session.LoggedIn }}
-            <h1>{{ .Session.Username }} is already logged in!</h1>
-        {{ else }}
-            <h1>Welcome whomever you are!</h1>
-        {{ end }}
-        <div>
-            <form class="login" id="login" method="post" action="/loginSubmit">
-                <div class="form-element">
-                    <label for="username">Username</label>
-                    <input type="text", id="username" name="username" autocomplete="username">
-                </div>
-                <div class="form-element">
-                    <label for="password">Password</label>
-                    <input type="password" id="password" name="password" autocomplete="current-password">
-                </div>
-                <div class="button">
-                    <button type="submit">Submit</button>
-                </div>
-                <div class="warning hidden" id="login-error">
-                    <p class="warning">Username or password is incorrect.</p>
-                </div>
-            </form>
+  {{define "content"}}
+  {{ if .Session.LoggedIn }}
+  <h1>{{ .Session.Username }} is already logged in!</h1>
+  {{ else }}
+  <h1>Welcome whomever you are!</h1>
+  {{ end }}
+  <div>
+    <form class="login" id="login" method="post" action="/loginSubmit">
+      <div class="form-element">
+        <label for="email">Email</label>
+        <input type="text" , id="email" name="email" autocomplete="email">
+      </div>
+      <div class="form-element">
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" autocomplete="current-password">
+      </div>
+      <div class="submit-options">
+        <div class="button">
+          <button type="submit" value="login">Submit</button>
         </div>
-        <script src="/static/js/utils.js"></script>
-        <script src="/static/js/login.js"></script>
-        {{end}}
+        <div class="button">
+          <button type="submit" value="forgot">Forgot Password</button>
+        </div>
+      </div>
+      <div class="warning hidden" id="login-error">
+        <p class="warning">email or password is incorrect.</p>
+      </div>
+      <div class="message hidden" id="message">
+        <p class="success">If an account was found, an email has been sent</p>
+      </div>
+    </form>
+  </div>
+  <script src="/static/js/utils.js"></script>
+  <script src="/static/js/login.js"></script>
+  {{end}}
 </body>
+
 </html>
