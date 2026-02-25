@@ -3,11 +3,13 @@ package handlers
 import (
 	"crypto/rand"
 	"database/sql"
+	"encoding/json"
 	"fmt"
 	"log"
 	"net/http"
 
 	accounts "github.com/gwaDyckuL1/Ratio_Baking_Site/Accounts"
+	"github.com/gwaDyckuL1/Ratio_Baking_Site/models"
 )
 
 func ForgotLoginSubmitHandler(db *sql.DB) http.HandlerFunc {
@@ -33,6 +35,7 @@ func ForgotLoginSubmitHandler(db *sql.DB) http.HandlerFunc {
 		var username string
 		err = db.QueryRow(query, email).Scan(&username)
 		if err != nil {
+			json.NewEncoder(w).Encode(models.Response{Ok: true})
 			return
 		}
 
@@ -41,6 +44,7 @@ func ForgotLoginSubmitHandler(db *sql.DB) http.HandlerFunc {
 		if err != nil {
 			log.Printf("Error in hashing token: %v", err)
 			w.WriteHeader(http.StatusOK)
+			json.NewEncoder(w).Encode(models.Response{Ok: true})
 			return
 		}
 		query = `
@@ -51,10 +55,13 @@ func ForgotLoginSubmitHandler(db *sql.DB) http.HandlerFunc {
 		if err != nil {
 			log.Printf("Error inserting token: %v", err)
 			w.WriteHeader(http.StatusOK)
+			json.NewEncoder(w).Encode(models.Response{Ok: true})
 			return
 		}
 
 		resetURL := fmt.Sprintf("https://localhost:8080/reseetPassword?token=%s", token)
 		fmt.Printf("To resert your password follow this link: %s", resetURL)
+
+		json.NewEncoder(w).Encode(models.Response{Ok: true})
 	}
 }
