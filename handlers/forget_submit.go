@@ -9,6 +9,7 @@ import (
 	"net/http"
 
 	accounts "github.com/gwaDyckuL1/Ratio_Baking_Site/Accounts"
+	"github.com/gwaDyckuL1/Ratio_Baking_Site/database"
 	"github.com/gwaDyckuL1/Ratio_Baking_Site/models"
 )
 
@@ -19,6 +20,8 @@ func ForgotLoginSubmitHandler(db *sql.DB) http.HandlerFunc {
 			http.Redirect(w, r, "/", http.StatusSeeOther)
 			return
 		}
+
+		database.ForgotPasswordCleanup(db)
 
 		err := r.ParseForm()
 		if err != nil {
