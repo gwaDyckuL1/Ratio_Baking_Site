@@ -23,7 +23,7 @@ func ForgotLoginSubmitHandler(db *sql.DB) http.HandlerFunc {
 
 		database.ForgotPasswordCleanup(db)
 
-		err := r.ParseForm()
+		err := r.ParseMultipartForm(4 << 20)
 		if err != nil {
 			log.Printf("Error parsing forgot password form: %v", err)
 			http.Error(w, "Error parsing form.", http.StatusBadRequest)
