@@ -1,7 +1,9 @@
 package accounts
 
 import (
+	"crypto/sha256"
 	"database/sql"
+	"fmt"
 
 	"golang.org/x/crypto/bcrypt"
 )
@@ -21,4 +23,10 @@ func GetPassword(email string, db *sql.DB) (int, string, error) {
 func HashPassword(password string) (string, error) {
 	bytes, err := bcrypt.GenerateFromPassword([]byte(password), 14)
 	return string(bytes), err
+}
+
+func HashToken(token string) string {
+	h := sha256.New()
+	h.Write([]byte(token))
+	return fmt.Sprintf("%x", h.Sum(nil))
 }

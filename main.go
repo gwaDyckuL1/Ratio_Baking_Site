@@ -51,6 +51,7 @@ func main() {
 	router.Handle("/login", handlers.SessionMiddleware(db, handlers.LoginHandler(templates)))
 	router.Handle("/loginSubmit", handlers.SessionMiddleware(db, handlers.LoginSubmitHandler(db)))
 	router.Handle("/logout", handlers.SessionMiddleware(db, handlers.LogoutHandler(db)))
+	router.Handle("/passwordreset", handlers.PasswordResetHandler(db))
 	router.Handle("/register", handlers.SessionMiddleware(db, handlers.RegisterHandler(templates)))
 	router.Handle("/registrationSubmit", handlers.SessionMiddleware(db, handlers.RegistrationSubmitHandler(db)))
 

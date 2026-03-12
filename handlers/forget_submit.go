@@ -43,7 +43,7 @@ func ForgotLoginSubmitHandler(db *sql.DB) http.HandlerFunc {
 		}
 
 		token := rand.Text()
-		hashToken, err := accounts.HashPassword(token)
+		hashToken := accounts.HashToken(token)
 		if err != nil {
 			log.Printf("Error in hashing token: %v", err)
 			w.WriteHeader(http.StatusOK)
