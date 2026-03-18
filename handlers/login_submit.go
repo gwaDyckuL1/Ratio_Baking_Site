@@ -87,7 +87,7 @@ func LoginSubmitHandler(db *sql.DB) http.HandlerFunc {
 			json.NewEncoder(w).Encode(models.Response{
 				Ok:      false,
 				Field:   "login-error",
-				Message: "The emailor password is incorrect.",
+				Message: "The email or password is incorrect.",
 			})
 			return
 		}

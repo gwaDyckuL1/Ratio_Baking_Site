@@ -44,12 +44,6 @@ func ForgotLoginSubmitHandler(db *sql.DB) http.HandlerFunc {
 
 		token := rand.Text()
 		hashToken := accounts.HashToken(token)
-		if err != nil {
-			log.Printf("Error in hashing token: %v", err)
-			w.WriteHeader(http.StatusOK)
-			json.NewEncoder(w).Encode(models.Response{Ok: true})
-			return
-		}
 		query = `
 			INSERT INTO forgotToken (token, email)
 			VALUES (?,?)
@@ -62,7 +56,7 @@ func ForgotLoginSubmitHandler(db *sql.DB) http.HandlerFunc {
 			return
 		}
 
-		resetURL := fmt.Sprintf("https://localhost:8080/reseetPassword?token=%s", token)
+		resetURL := fmt.Sprintf("http://localhost:8080/passwordReset?token=%s", token)
 		fmt.Printf("To resert your password follow this link: %s", resetURL)
 
 		json.NewEncoder(w).Encode(models.Response{Ok: true})

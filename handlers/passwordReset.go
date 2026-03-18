@@ -18,7 +18,7 @@ func PasswordResetHandler(db *sql.DB) http.HandlerFunc {
 
 		tmpl := template.Must(template.ParseFiles(
 			"templates/layout.html",
-			"templates/passwordReset",
+			"templates/passwordReset.html",
 		))
 
 		err := tmpl.Execute(w, data)
