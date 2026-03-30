@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 
 	accounts "github.com/gwaDyckuL1/Ratio_Baking_Site/Accounts"
 	"github.com/gwaDyckuL1/Ratio_Baking_Site/database"
@@ -56,7 +57,8 @@ func ForgotLoginSubmitHandler(db *sql.DB) http.HandlerFunc {
 			return
 		}
 
-		resetURL := fmt.Sprintf("http://localhost:8080/passwordReset?token=%s", token)
+		baseURL := os.Getenv("BASE_URL")
+		resetURL := fmt.Sprintf("%s/passwordReset?token=%s", baseURL, token)
 		fmt.Printf("To resert your password follow this link: %s", resetURL)
 
 		json.NewEncoder(w).Encode(models.Response{Ok: true})

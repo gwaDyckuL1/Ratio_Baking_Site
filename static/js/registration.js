@@ -1,53 +1,10 @@
-const passwordInput = document.getElementById("password");
-const strengthText = document.getElementById("strength-text");
+let passwordInput = document.getElementById("password")
 
 passwordInput.addEventListener("input", () => {
     const password = passwordInput.value;
-    let score = 0;
 
-    if (password.length >= 8) score++;
-    if (/[A-Z]/.test(password)) score++;
-    if (/[a-z]/.test(password)) score++;
-    if (/[0-9]/.test(password)) score++;
-    if (/[^A-Za-z0-9]/.test(password)) score++;
+     passwordStrength(password);
 
-    let strength = "";
-    let width = "";
-    let color = "";
-
-    switch (score) {
-        case 0:
-        case 1:
-            strength = "Very Weak";
-            width = "20%";
-            color = "red";
-            break
-        case 2:
-            strength = "Weak";
-            width = "40%";
-            color = "orange";
-            break
-        case 3:
-            strength = "Moderate";
-            width = "60%";
-            color = "yellow";
-            break
-        case 4:
-            strength = "Strong"
-            width = "80%";
-            color = "lightgreen";
-            break
-        case 5:
-            strength = "Very Strong";
-            width = "100%";
-            color = "green";
-            break
-    }
-
-    strengthText.textContent = strength;
-    strengthText.style.color = color;
-    passwordInput.style.borderColor = color;
-    passwordInput.style.boxShadow = `0 0 10px ${color}`;
 })
 
 document.getElementById("registration").addEventListener("submit", async function(e) {

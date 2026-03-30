@@ -20,7 +20,11 @@ func PasswordResetSubmit(db *sql.DB) http.HandlerFunc {
 
 		err := r.ParseMultipartForm(4 << 20)
 		if err != nil {
-			http.Error(w, "Invalid form submission", http.StatusBadRequest)
+			json.NewEncoder(w).Encode(models.Response{
+				Ok:      false,
+				Field:   "token",
+				Message: "Internal error, please try again leter.",
+			})
 			return
 		}
 
@@ -32,7 +36,7 @@ func PasswordResetSubmit(db *sql.DB) http.HandlerFunc {
 			FROM forgotToken
 			WHERE token = ?;
 		`
-		err = db.QueryRow(query, hashToken).Scan(email)
+		err = db.QueryRow(query, hashToken).Scan(&email)
 		if err != nil {
 			if errors.Is(err, sql.ErrNoRows) {
 				json.NewEncoder(w).Encode(models.Response{
@@ -43,7 +47,11 @@ func PasswordResetSubmit(db *sql.DB) http.HandlerFunc {
 				return
 			}
 			log.Printf("Error using token to get email: %v", err)
-			http.Error(w, "Internal server error. Please try again later", http.StatusInternalServerError)
+			json.NewEncoder(w).Encode(models.Response{
+				Ok:      false,
+				Field:   "token",
+				Message: "Internal error, please try again leter.",
+			})
 			return
 		}
 
@@ -51,7 +59,11 @@ func PasswordResetSubmit(db *sql.DB) http.HandlerFunc {
 		hashPassword, err := accounts.HashPassword(password)
 		if err != nil {
 			log.Printf("Error in hashing password: %v", err)
-			http.Error(w, "Internal Server Error. Please try again later", http.StatusInternalServerError)
+			json.NewEncoder(w).Encode(models.Response{
+				Ok:      false,
+				Field:   "token",
+				Message: "Internal error, please try again leter.",
+			})
 			return
 		}
 
@@ -63,7 +75,11 @@ func PasswordResetSubmit(db *sql.DB) http.HandlerFunc {
 		_, err = db.Exec(query, hashPassword, email)
 		if err != nil {
 			log.Printf("Error in updating password for %v: %v", email, err)
-			http.Error(w, "Internal Server Error. Please try again later", http.StatusInternalServerError)
+			json.NewEncoder(w).Encode(models.Response{
+				Ok:      false,
+				Field:   "token",
+				Message: "Internal error, please try again leter.",
+			})
 			return
 		}
 
@@ -76,5 +92,11 @@ func PasswordResetSubmit(db *sql.DB) http.HandlerFunc {
 		if err != nil {
 			log.Printf("Error removing token after changing password: %v", err)
 		}
+
+		json.NewEncoder(w).Encode(models.Response{
+			Ok:      true,
+			Field:   "message",
+			Message: "Password successfully changed.",
+		})
 	}
 }
