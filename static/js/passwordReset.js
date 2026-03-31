@@ -39,7 +39,7 @@ document.getElementById("passwordReset").addEventListener("submit", async functi
   const data = await results.json(); 
   message.innerText = data.message;
   console.log("This is the message: ", data.message)
-  if(!data.Ok) {
+  if(!data.ok) {
     message.classList.add("warning");
     message.classList.remove("success");
   } else {
