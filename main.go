@@ -17,11 +17,13 @@ import (
 
 var pages = []string{"index", "about", "contact", "register", "login", "forgotLogin"}
 var calcPages = []string{"calcIndex", "bread"}
+var userPages = []string{"index", "dashboard"}
 var templates = map[string]*template.Template{}
 
 func main() {
 	loadPages()
 	loadCalcPages()
+	loadUserPages()
 
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
@@ -61,6 +63,8 @@ func main() {
 	router.Handle("/calculator/", handlers.SessionMiddleware(db, handlers.CalculatorIndexHandler(templates)))
 	router.Handle("/calculator/bread", handlers.SessionMiddleware(db, handlers.CalculatorBreadHandler(templates)))
 	router.Handle("/calculator/results", handlers.SessionMiddleware(db, handlers.CalcResultsHandler()))
+
+	router.Handle("/users/dashboard", handlers.SessionMiddleware(db, handlers.UserDashboardHandler(templates)))
 
 	server := http.Server{
 		Addr:    ":8080",
@@ -112,5 +116,16 @@ func loadCalcPages() {
 			"templates/calculator/"+page+".html",
 		))
 		templates[page] = tmpl
+	}
+}
+
+func loadUserPages() {
+	for _, page := range userPages {
+		templ := template.Must(template.ParseFiles(
+			"templates/layout.html",
+			"templates/users/layout.html",
+			"templates/users/"+page+".html",
+		))
+		templates[page] = templ
 	}
 }
