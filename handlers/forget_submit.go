@@ -22,6 +22,7 @@ func ForgotLoginSubmitHandler(db *sql.DB) http.HandlerFunc {
 			return
 		}
 
+		w.Header().Set("Context-Type", "application/json")
 		database.ForgotPasswordCleanup(db)
 
 		err := r.ParseMultipartForm(4 << 20)

@@ -19,6 +19,8 @@ func RegistrationSubmitHandler(db *sql.DB) http.HandlerFunc {
 			return
 		}
 
+		w.Header().Set("Context-Type", "application/json")
+
 		err := r.ParseMultipartForm(4 << 20)
 		if err != nil {
 			http.Error(w, "Invalid form submission", http.StatusBadRequest)

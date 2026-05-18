@@ -13,6 +13,8 @@ import (
 func LoginSubmitHandler(db *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 
+		w.Header().Set("Context-Type", "application/json")
+
 		if r.Method != http.MethodPost {
 			http.Redirect(w, r, "/", http.StatusSeeOther)
 			return

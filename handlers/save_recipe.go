@@ -13,6 +13,8 @@ func SaveRecipeHandler(db *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		sessionInfo := r.Context().Value("session").(*models.Session)
 
+		w.Header().Set("Context-Type", "application/json")
+
 		if r.Method != http.MethodPost {
 			http.Redirect(w, r, "/", http.StatusSeeOther)
 			return

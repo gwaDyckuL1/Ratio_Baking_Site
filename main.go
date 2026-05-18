@@ -65,6 +65,7 @@ func main() {
 	router.Handle("/calculator/results", handlers.SessionMiddleware(db, handlers.CalcResultsHandler()))
 
 	router.Handle("/users/dashboard", handlers.SessionMiddleware(db, handlers.UserDashboardHandler(templates)))
+	router.Handle("/users/dashboard/data", handlers.SessionMiddleware(db, handlers.DashboardDataHandler(db)))
 
 	server := http.Server{
 		Addr:    ":8080",

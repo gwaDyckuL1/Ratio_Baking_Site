@@ -18,6 +18,8 @@ func PasswordResetSubmit(db *sql.DB) http.HandlerFunc {
 			http.Redirect(w, r, "/", http.StatusSeeOther)
 		}
 
+		w.Header().Set("Context-Type", "application/json")
+
 		err := r.ParseMultipartForm(4 << 20)
 		if err != nil {
 			json.NewEncoder(w).Encode(models.Response{
