@@ -2,6 +2,8 @@ const graphContainer = document.getElementById("dashBarChart");
 let recipeData = null;
 let counts = {};
 let graphStage = 0;
+let current_category = "";
+let current_subcategory = "";
 
 function renderBarChart(data) {
   graphContainer.innerHTML = "";
@@ -71,10 +73,14 @@ function renderBarChart(data) {
     back_button.style.cursor = "pointer";
     back_button.addEventListener("click", () => {
       graphStage--;
+      let result;
       if(graphStage === 0) {
-        const result = Object.entries(counts).map(([category, value]) => [category, value.total]);
-        renderBarChart(result);
+        result = Object.entries(counts).map(([category, value]) => [category, value.total]);
       }
+      if(graphStage === 1) {
+        result = Object.entries(counts[current_category].subcategories).map(([category, value]) => [category, value.total]);
+      }
+      renderBarChart(result);
     });
 
     const back_button_text = document.createElementNS('http://www.w3.org/2000/svg', "text");
@@ -88,10 +94,14 @@ function renderBarChart(data) {
     back_button_text.setAttribute("dominant-baseline", "middle");
     back_button_text.addEventListener("click", () => {
       graphStage--;
+      let result;
       if(graphStage === 0) {
-        const result = Object.entries(counts).map(([category, value]) => [category, value.total]);
-        renderBarChart(result);
+        result = Object.entries(counts).map(([category, value]) => [category, value.total]);
       }
+      if(graphStage === 1) {
+        result = Object.entries(counts[current_category].subcategories).map(([category, value]) => [category, value.total]);
+      }
+      renderBarChart(result);
     })
     
     svg.appendChild(tempSQ);
@@ -143,8 +153,22 @@ function renderBarChart(data) {
       bar.addEventListener("click", () => {
         if (graphStage === 0) {
           graphStage++
-          handleBarClicks(name)
-        }
+          current_category = name;
+          handleBarClicks(name);
+        } else if  (graphStage === 1) {
+          graphStage++;
+          current_subcategory = name;
+          handleBarClicks(name);
+
+          recipeData.forEach(item => {
+            let category = item.category;
+            let subcategory = item.subcategory;
+
+            if (category == current_category && subcategory == current_subcategory) {
+              let recipe = JSON.parse(item.recipe_data);
+            }
+          })
+        } 
       });
 
       let barName = document.createElementNS("http://www.w3.org/2000/svg", "text");
@@ -169,21 +193,27 @@ function renderBarChart(data) {
 }
 
 function handleBarClicks(name) {
-  
+  let result;  
+
   if (graphStage === 1) {
-    const result = Object.entries(counts[name].subcategories).map(([category, value]) => [category, value]);
-    renderBarChart(result);
+    result = Object.entries(counts[name].subcategories).map(([category, value]) => [category, value.total]);
   }
+
+  if (graphStage === 2) {
+    result = Object.entries(counts[current_category].subcategories[name].names).map(([category, value]) => [category, value]);
+  }
+
+  renderBarChart(result);
 }
 
 document.addEventListener("DOMContentLoaded", async () => {
   const response = await fetch("/users/dashboard/data");
   recipeData = await response.json();
 
-  console.log(recipeData);
   recipeData.forEach(item => {
     const category = item.category;
     const subCategory = item.subcategory;
+    const name = item.recipe_name
 
     if(!counts[category]) {
       counts[category] = { total: 0,
@@ -192,13 +222,20 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     if(!counts[category].subcategories[subCategory]) {
-      counts[category].subcategories[subCategory] = 0;
+      counts[category].subcategories[subCategory] = {
+        total: 0,
+        names: {}
+      };
+    }
+
+    if(!counts[category].subcategories[subCategory].names[name]) {
+      counts[category].subcategories[subCategory].names[name] = 0;
     }
 
     counts[category].total++;
-    counts[category].subcategories[subCategory]++
+    counts[category].subcategories[subCategory].total++;
+    counts[category].subcategories[subCategory].names[name]++;
   })
-
 
   const result = Object.entries(counts).map(([category, value]) => [category, value.total]);
   renderBarChart(result);
