@@ -41,7 +41,6 @@ type RecipeData struct {
 	LeavenerOut         string
 	SourdoughIn         string
 	YeastIn             string
-	Notes               string
 }
 
 type RegistrationData struct {

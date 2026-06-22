@@ -1,71 +1,85 @@
 body {
-    width: 600px;
-    background-color: burlywood;
-    margin: 0 auto;
-    border: 1px black;
+  width: 600px;
+  background-color: burlywood;
+  margin: 0 auto;
+  border: 1px black;
 }
 
 .calc-layout {
-    display: flex;
-    align-items: flex-start;
-    gap: 20px;
-    width: 100%; 
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+  width: 100%;
 }
 
-.calc-layout > div:first-child {
-    width: 50%;
+.calc-layout>div:first-child {
+  width: 50%;
 }
 
-.calc-layout > div:nth-child(2) {
-    width: 50%;
+.calc-layout>div:nth-child(2) {
+  width: 50%;
 }
 
 .calc-layout h2 {
-    margin-top: 0;
+  margin-top: 0;
 }
 
 .form-element {
-    display: flex;
-    align-items: center;
-    margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
 }
 
 .form-element label {
-    width: 150px;
+  width: 150px;
 }
 
 .hidden {
-    display: none !important;
+  display: none !important;
+}
+
+#recipe-title {
+  font-size: 2rem;
+  font-weight: bold;
 }
 
 #strength-test {
-    font-size: 0.9rem;
-    font-weight: bold;
-    margin-top: 5px;
-    color: #333;
+  font-size: 0.9rem;
+  font-weight: bold;
+  margin-top: 5px;
+  color: #333;
 }
 
 .success {
-    color: green;
-    font-weight: bold;
+  color: green;
+  font-weight: bold;
+}
+
+table {
+  border: 2px solid black;
+}
+
+th,
+td {
+  border: 1px solid rgb(160, 160, 160);
 }
 
 .warning {
-    color: red;
-    display: flex;
-    font-weight: bold;
+  color: red;
+  display: flex;
+  font-weight: bold;
 }
 
 /*Tablets*/
 @media (min-width: 600px) {
-    body {
-        width: 900px;
-    }
+  body {
+    width: 900px;
+  }
 }
 
 /* Desktop */
 @media (min-width: 900px) {
-    body {
-        width: 1200px;
-    }
+  body {
+    width: 1200px;
+  }
 }
