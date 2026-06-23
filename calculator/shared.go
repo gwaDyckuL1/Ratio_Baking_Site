@@ -78,13 +78,13 @@ func getTotalWeight(area float64, data *models.RecipeData, problems models.FormE
 
 func modifyForTangzhong(data *models.RecipeData, problems models.FormErrors) {
 	flour := stringToFloat("flour", data.FlourOut, problems)
-	hydration := stringToFloat("hydration", data.HydrationIn, problems)
+	hydration := stringToFloat("hydration", data.HydrationOut, problems)
 	tangzhongPercentage := stringToFloat("tangzhong Percentage", data.TangzhongPercentage, problems)
 	ratio := stringToFloat("Ratio", data.TanghzhongRatio, problems)
 
 	tFlour := (tangzhongPercentage / 100) / (1 + ratio) * flour
 	tHydration := tFlour * ratio
-
+	fmt.Println("Hydration: ", hydration, "t-hydration: ", tHydration)
 	data.TangzhongFlour = strconv.FormatFloat(tFlour, 'f', 0, 64)
 	data.TangzhongHydration = strconv.FormatFloat(tHydration, 'f', 0, 64)
 	data.FlourOut = strconv.FormatFloat(flour-tFlour, 'f', 0, 64)
