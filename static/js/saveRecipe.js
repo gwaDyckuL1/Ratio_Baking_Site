@@ -13,6 +13,10 @@ document.getElementById("saveRecipe").addEventListener("submit", async function(
     const data = await result.json();
     if (data.ok) {
         show("success")
+        setTimeout(() => {
+            window.location.href = "/calculator/";        
+            
+        },2000)
     } else {
         show("save-error")
     }

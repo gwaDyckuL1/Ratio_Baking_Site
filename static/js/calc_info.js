@@ -20,6 +20,15 @@ document.getElementById("calc-form").addEventListener("focusin", (e) => {
                 <p><b>Pan Dimension</b>: Recipe is calculated so the bread fits that pan.</p>
             `;
             break;
+        case "calculator-cake":
+            insertHtml = `
+                <p>What type of cake do you want to make?</p> 
+                <p><b>Free Form</b>: This allows you to have full control over the ingredient ratios used.</p>
+                <p><b>High Ratio Cake</b>: This is the style of cake most people are use to ordering from a bakery</p>
+                <p><b>Pound Cake</b>: The traditional pound cake scaled to the container you are going to use.</p>
+                <p><b>Sponge Cake</b>: Generally doesn't contain butter and relys on the eggs for leavening.</p>
+            `
+            break;
         case "measurement":
             insertHtml = `
                 <p>Are you measuring the container in inches or centimeters?</p>
@@ -60,6 +69,8 @@ document.getElementById("calc-form").addEventListener("focusin", (e) => {
         case "hydration":
         case "fat":
         case "sugar":
+            insertHtml = bakersPercentage;
+            break;
         case "egg":
             let flour = document.getElementById("flour").value;
             let wholeEgg = 56 / flour * 100;

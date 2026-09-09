@@ -15,21 +15,21 @@ function getRecipeList() {
   switch (graphStage) {
     case 0:
       filtered = recipeData;
-      title = "All Recipies";
+      title = "All Recipes";
       break;
     case 1:
-      filtered = recipeData.filter(item => item.category = current_category);
-      title = `All ${current_category} Recipies`;
+      filtered = recipeData.filter(item => item.category == current_category);
+      title = `All ${current_category} Recipes`;
       break;
     case 2:
-      filtered = recipeData.filter(item => item.category = current_category && item.subcategory == current_subcategory);
-      title = `All ${current_category} Recipies Made By ${current_subcategory}`;
+      filtered = recipeData.filter(item => item.category == current_category && item.subcategory == current_subcategory);
+      title = `All ${current_category} Recipes Made By ${current_subcategory}`;
       break;
     case 3:
-      filtered = recipeData.filter(item => item.category = current_category &&
+      filtered = recipeData.filter(item => item.category == current_category &&
         item.subcategory == current_subcategory &&
         item.recipe_name == current_name);
-      title = `${current_name} ${current_category} Recipies Made By ${current_subcategory}.`;
+      title = `${current_name} ${current_category} Recipes Made By ${current_subcategory}.`;
   }
   filtered.forEach(item => {
     recipe = JSON.parse(item.recipe_data);
@@ -263,7 +263,6 @@ function handleBarClicks() {
 document.addEventListener("DOMContentLoaded", async () => {
   const response = await fetch("/users/dashboard/data");
   recipeData = await response.json();
-  console.log(recipeData)
   recipeData.forEach(item => {
     const category = item.category;
     const subCategory = item.subcategory;

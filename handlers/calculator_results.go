@@ -27,7 +27,7 @@ func CalcResultsHandler() http.HandlerFunc {
 
 		data := models.RecipeData{
 			Calculator:          r.FormValue("calculatorFor"),
-			SubCalculator:       r.FormValue("calculator-bread"),
+			SubCalculator:       r.FormValue("calculator-option"),
 			Measurement:         r.FormValue("measurement"),
 			Shape:               r.FormValue("shape"),
 			Height:              r.FormValue("height"),

@@ -16,7 +16,7 @@ import (
 )
 
 var pages = []string{"index", "about", "contact", "register", "login", "forgotLogin"}
-var calcPages = []string{"calcIndex", "bread"}
+var calcPages = []string{"calcIndex", "bread", "cake"}
 var userPages = []string{"index", "dashboard"}
 var templates = map[string]*template.Template{}
 
@@ -62,6 +62,7 @@ func main() {
 
 	router.Handle("/calculator/", handlers.SessionMiddleware(db, handlers.CalculatorIndexHandler(templates)))
 	router.Handle("/calculator/bread", handlers.SessionMiddleware(db, handlers.CalculatorBreadHandler(templates)))
+	router.Handle("/calculator/cake", handlers.SessionMiddleware(db, handlers.CalculatorCakeHandler(templates)))
 	router.Handle("/calculator/results", handlers.SessionMiddleware(db, handlers.CalcResultsHandler()))
 
 	router.Handle("/users/dashboard", handlers.SessionMiddleware(db, handlers.UserDashboardHandler(templates)))

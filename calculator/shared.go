@@ -38,7 +38,7 @@ func getArea(data *models.RecipeData, problems models.FormErrors) float64 {
 	switch data.Shape {
 	case "square":
 		area = height * width * depth
-	case "circle":
+	case "round":
 		radius := diameter / 2
 		area = math.Pi * radius * radius * depth
 	}
